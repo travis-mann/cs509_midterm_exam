@@ -6,6 +6,8 @@ public class NinjectBindings : NinjectModule
     {
         Bind<IATMSystem>().To<ATMSystem>();
         Bind<ILoginMenu>().To<LoginMenu>();
+        Bind<IMenuCreator>().To<MenuCreator>();
+        Bind<IMenu>().To<Menu>();
+        Bind<IInputGetter>().To<InputGetter>();
     }
 }
-

@@ -2,52 +2,29 @@
 
 public class LoginMenu: ILoginMenu
 {
-    private static int invalidUserID = -1;
+    private readonly static int InvalidUserID = -1;
+    private IInputGetter _InputGetter;
+
+    public LoginMenu(IInputGetter InputGetter)
+    {
+        _InputGetter = InputGetter;
+    }
 
     public int Login()
     {
 
-        int user_id = invalidUserID;
-        while (user_id == invalidUserID)
+        int user_id = InvalidUserID;
+        while (user_id == InvalidUserID)
         {
-            string login = getInput("([a-z]|[A-Z]|[0-9])+", "login");
-            int pin = Convert.ToInt16(getInput("[0-9]{5}", "pin"));
+            string login = _InputGetter.GetInput(input => new Regex("([a-z]|[A-Z]|[0-9])+").Match(input).Success, "login");
+            int pin = Convert.ToInt16(_InputGetter.GetInput(input => new Regex("[0-9]{5}").Match(input).Success, "pin"));
             user_id = getUserID(login, pin);
-            if (user_id == invalidUserID) {
+            if (user_id == InvalidUserID) {
                 Console.WriteLine("ERROR: invalid user credentials, please try again");
             }
         }
         Console.WriteLine("login success!");
         return user_id;
-    }
-
-    private static string getInput(string formatRegex, string fieldName)
-    {
-        // initial prompt
-        Console.Write($"Enter {fieldName}:");
-        string input = "";
-
-        bool inputValid = false;
-        while (!inputValid)
-        {
-            // get input
-            input = Console.ReadLine();
-
-            // validate login format
-            Regex regex = new Regex(formatRegex, RegexOptions.ECMAScript);
-            Match match = regex.Match(input);
-
-            if (match.Success)  // valid login string
-            {
-                inputValid = true;
-            }
-            else  // Invalid login string
-            {
-                Console.Write($"ERROR: Invalid {fieldName}, Try again:");
-            }
-        }
-        
-        return input;
     }
 
     private static int getUserID(string username, int pin) 
@@ -67,7 +44,7 @@ public class LoginMenu: ILoginMenu
             }
             else
             {
-                return invalidUserID;
+                return InvalidUserID;
             }
         }
     }
