@@ -1,7 +1,7 @@
 ﻿public interface IMenuOption
 {
-    string Name { get; }
+    public string Name { get; }
 
-    public void run();
+    public void Run();
 }
 
