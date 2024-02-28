@@ -2,6 +2,6 @@
 {
     public string Name { get; }
 
-    public void Run();
+    public void Run(int user_id);
 }
 

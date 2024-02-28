@@ -1,10 +1,10 @@
-﻿internal class DepositCashMenuOption : IMenuOption
+﻿internal class DepositCashMenuOption : IDepositCashMenuOption
 {
     public string Name { get; } = "Deposit Cash";
 
     public DepositCashMenuOption() { }
 
-    public void Run()
+    public void Run(int user_id)
     {
         Console.WriteLine("Depositing Cash");
     }

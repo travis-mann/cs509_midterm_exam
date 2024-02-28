@@ -18,7 +18,7 @@ public class LoginMenu: ILoginMenu
         {
             string login = _InputGetter.GetInput(input => new Regex("([a-z]|[A-Z]|[0-9])+").Match(input).Success, "login");
             int pin = Convert.ToInt16(_InputGetter.GetInput(input => new Regex("[0-9]{5}").Match(input).Success, "pin"));
-            user_id = getUserID(login, pin);
+            user_id = GetUserID(login, pin);
             if (user_id == InvalidUserID) {
                 Console.WriteLine("ERROR: invalid user credentials, please try again");
             }
@@ -27,7 +27,7 @@ public class LoginMenu: ILoginMenu
         return user_id;
     }
 
-    private static int getUserID(string username, int pin) 
+    private static int GetUserID(string username, int pin) 
     {
         // search database for user id associated with given credentials
         using (var context = new Context())
