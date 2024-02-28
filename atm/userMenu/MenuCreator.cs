@@ -6,30 +6,39 @@ public class NoRoleFoundException: Exception
 
 internal class MenuCreator : IMenuCreator
 {
-    // build pre-configured menus
-    private Dictionary<string, IMenuOption[]> menuItemMap = new(){
-        { "customer", 
-            new IMenuOption[] { 
-                new WithdrawCashMenuOption(),
-                new DisplayBalanceMenuOption(),
-                new DepositCashMenuOption()
+    private IInputGetter _InputGetter;
+    private Dictionary<string, IMenuOption[]> menuItemMap;
+
+    public MenuCreator(
+        IInputGetter InputGetter, 
+        IWithdrawCashMenuOption WithdrawCashMenuOption,
+        IDisplayBalanceMenuOption DisplayBalanceMenuOption,
+        IDepositCashMenuOption DepositCashMenuOption,
+        ICreateNewAccountMenuOption CreateNewAccountMenuOption,
+        IDeleteExistingAccountMenuOption DeleteExistingAccountMenuOption,
+        IUpdateAccountInformationMenuOption UpdateAccountInformationMenuOption,
+        ISearchForAccountMenuOption SearchForAccountMenuOption
+    )
+    {
+        _InputGetter = InputGetter;
+
+        menuItemMap = new(){
+        { "customer",
+            new IMenuOption[] {
+                WithdrawCashMenuOption,
+                DisplayBalanceMenuOption,
+                DepositCashMenuOption
             }
         },
         { "admin",
             new IMenuOption[] {
-                new CreateNewAccountMenuOption(),
-                new DeleteExistingAccountMenuOption(),
-                new UpdateAccountInformationMenuOption(),
-                new SearchForAccountMenuOption()
+                CreateNewAccountMenuOption,
+                DeleteExistingAccountMenuOption,
+                UpdateAccountInformationMenuOption,
+                SearchForAccountMenuOption
             }
         },
     };
-
-    private IInputGetter _InputGetter;
-
-    public MenuCreator(IInputGetter InputGetter)
-    {
-        _InputGetter = InputGetter;
     }
 
     public IMenu GetMenu(int user_id)

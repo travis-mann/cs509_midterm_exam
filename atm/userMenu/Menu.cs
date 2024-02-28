@@ -14,7 +14,7 @@ public class Menu: IMenu
         ExitIndex = menuOptions.Length + 1;
     }
 
-    public void Run()
+    public void Run(int user_id)
     {
         bool runMenu = true;
         while (runMenu) 
@@ -27,7 +27,7 @@ public class Menu: IMenu
             }
             else
             {
-                _MenuOptions[selection - 1].Run();
+                _MenuOptions[selection - 1].Run(user_id);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿internal class UserRepository
+﻿public class UserRepository
 {
     public int id { get; set; }
     public string login { get; set; }

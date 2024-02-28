@@ -17,7 +17,7 @@
         {
             int user_id = _LoginMenu.Login();
             IMenu menu = _MenuCreator.GetMenu(user_id);
-            menu.Run();
+            menu.Run(user_id);
         }
     }
 }
