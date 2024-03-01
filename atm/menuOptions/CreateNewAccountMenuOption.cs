@@ -21,21 +21,23 @@ internal class CreateNewAccountMenuOption : ICreateNewAccountMenuOption
     public void Run(int userID)
     {
         string login = GetLogin();
+        // check if user already exists
+        if (_UserDAL.IsValidLogin(login))
+        {
+            Console.WriteLine($"ERROR: User {login} already exists. Canceling create operation.");
+            return;
+        }
+
+        // get remaining user details
         int pin = GetPin();
         string name = GetName();
         int balance = GetBalance();
         string status = GetStatus();
 
-        try
-        {
-            int newUserID = _UserDAL.CreateUser(login, pin, name, status, "customer");
-            int newAccountID = _AccountDAL.CreateAccount(newUserID, (int)_StatusDAL.getStatusID(status), balance);
-            Console.WriteLine($"Account Successfully Created – the account number assigned is: {newAccountID}");
-        }
-        catch (DuplicateUserException)
-        {
-            Console.WriteLine($"ERROR: User {login} already exists.");
-        }
+        // create new account
+        int newUserID = _UserDAL.CreateUser(login, pin, name, status, "customer");
+        int newAccountID = _AccountDAL.CreateAccount(newUserID, (int)_StatusDAL.getStatusID(status), balance);
+        Console.WriteLine($"Account Successfully Created – the account number assigned is: {newAccountID}");
     }
 
     private string GetLogin()
