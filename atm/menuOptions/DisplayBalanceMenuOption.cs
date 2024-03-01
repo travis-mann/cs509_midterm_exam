@@ -2,10 +2,25 @@
 {
     public string Name { get; } = "Display Balance";
 
-    public DisplayBalanceMenuOption() { }
+    private IAccountDAL _AccountDAL;
+
+    public DisplayBalanceMenuOption(IAccountDAL AccountDAL)
+    {
+        _AccountDAL = AccountDAL;
+    }
 
     public void Run(int user_id)
     {
-        Console.WriteLine("Displaying Balance");
+        int account_id = _AccountDAL.GetAccountIDFromUser(user_id);
+
+        // display account details
+        Console.WriteLine($"Account #{account_id}");
+        Console.WriteLine($"Date: {GetTodaysDateString()}");
+        Console.WriteLine($"Balance: {_AccountDAL.GetBalance(account_id)}");
+    }
+
+    private static string GetTodaysDateString()
+    {
+        return DateTime.Now.ToString("MM/d/yyyy");
     }
 }

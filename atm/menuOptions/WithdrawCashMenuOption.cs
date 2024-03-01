@@ -39,7 +39,7 @@ internal class WithdrawCashMenuOption : IWithdrawCashMenuOption
 
     private static string GetTodaysDateString()
     {
-        return DateTime.Now.ToString("M/d/yyyy");
+        return DateTime.Now.ToString("MM/d/yyyy");
     }
 
     private static bool isValidInput(string input)
