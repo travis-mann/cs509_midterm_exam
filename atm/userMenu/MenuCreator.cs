@@ -8,9 +8,11 @@ internal class MenuCreator : IMenuCreator
 {
     private IInputGetter _InputGetter;
     private Dictionary<string, IMenuOption[]> menuItemMap;
+    private IRegexConstants _RegexConstants;
 
     public MenuCreator(
-        IInputGetter InputGetter, 
+        IInputGetter InputGetter,
+        IRegexConstants RegexConstants,
         IWithdrawCashMenuOption WithdrawCashMenuOption,
         IDisplayBalanceMenuOption DisplayBalanceMenuOption,
         IDepositCashMenuOption DepositCashMenuOption,
@@ -21,6 +23,7 @@ internal class MenuCreator : IMenuCreator
     )
     {
         _InputGetter = InputGetter;
+        _RegexConstants = RegexConstants;
 
         menuItemMap = new(){
         { "customer",
@@ -44,7 +47,7 @@ internal class MenuCreator : IMenuCreator
     public IMenu GetMenu(int user_id)
     {
         string role = GetUserRole(user_id);
-        return new Menu(menuItemMap[role], _InputGetter);
+        return new Menu(menuItemMap[role], _InputGetter, _RegexConstants);
     }
 
     private string GetUserRole(int user_id)
