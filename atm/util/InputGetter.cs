@@ -5,10 +5,10 @@ public class InputGetter: IInputGetter
     
     public InputGetter() { }
     
-    public string GetInput(Func<string, bool> isValid, string fieldName)
+    public string GetInput(Func<string, bool> isValid, string prompt, string? errorMessage = null)
     {
         // initial prompt
-        Console.Write($"Enter {fieldName}: ");
+        Console.Write(prompt);
         string input = "";
 
         bool inputValid = false;
@@ -21,9 +21,14 @@ public class InputGetter: IInputGetter
             {
                 inputValid = true;
             }
-            else  // Invalid login string
+            // Invalid login string
+            else if (errorMessage != null)  
             {
-                Console.Write($"ERROR: Invalid {fieldName}, Try again: ");
+                Console.Write(errorMessage);
+            }
+            else
+            {
+                Console.Write($"ERROR: Invalid value, Try again: ");
             }
         }
 

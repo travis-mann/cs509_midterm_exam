@@ -20,7 +20,7 @@ public class Menu: IMenu
         while (runMenu) 
         {
             DisplayOptions();
-            int selection = Convert.ToInt16(_InputGetter.GetInput(isValidSelection, "selection"));
+            int selection = Convert.ToInt16(_InputGetter.GetInput(isValidSelection, "Enter selection: "));
             if (selection == ExitIndex)
             {
                 runMenu = false;
