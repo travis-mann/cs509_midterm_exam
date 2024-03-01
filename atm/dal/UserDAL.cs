@@ -54,6 +54,22 @@ public class UserDAL: IUserDAL
         }
     }
 
+    public int GetUserStatus(int UserID)
+    {
+        using (Context context = new())
+        {
+            return GetUser(UserID, context).status_id;
+        }
+    }
+
+    public int GetUserPin(int UserID)
+    {
+        using (Context context = new())
+        {
+            return GetUser(UserID, context).pin;
+        }
+    }
+
     public int CreateUser(string login, int pin, string name, string status, string role)
     {
         using (Context context = new Context())
