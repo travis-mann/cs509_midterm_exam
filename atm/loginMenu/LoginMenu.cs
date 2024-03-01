@@ -16,8 +16,8 @@ public class LoginMenu: ILoginMenu
         int user_id = InvalidUserID;
         while (user_id == InvalidUserID)
         {
-            string login = _InputGetter.GetInput(input => new Regex("([a-z]|[A-Z]|[0-9])+").Match(input).Success, "login");
-            int pin = Convert.ToInt16(_InputGetter.GetInput(input => new Regex("[0-9]{5}").Match(input).Success, "pin"));
+            string login = _InputGetter.GetInput(input => new Regex("([a-z]|[A-Z]|[0-9])+").Match(input).Success, "Enter login: ");
+            int pin = Convert.ToInt16(_InputGetter.GetInput(input => new Regex("[0-9]{5}").Match(input).Success, "Enter pin: "));
             user_id = GetUserID(login, pin);
             if (user_id == InvalidUserID) {
                 Console.WriteLine("ERROR: invalid user credentials, please try again");

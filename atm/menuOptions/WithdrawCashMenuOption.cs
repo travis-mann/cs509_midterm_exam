@@ -16,7 +16,7 @@ internal class WithdrawCashMenuOption : IWithdrawCashMenuOption
     public void Run(int user_id)
     {
         // get input
-        int amount = Convert.ToInt32(_InputGetter.GetInput(isValidInput, "amount to withdraw")) * -1;
+        int amount = Convert.ToInt32(_InputGetter.GetInput(isValidInput, "Enter the withdrawal amount: ")) * -1;
         int account_id = _AccountDAL.GetAccountIDFromUser(user_id);
 
         // remove from account
@@ -27,13 +27,13 @@ internal class WithdrawCashMenuOption : IWithdrawCashMenuOption
         }
         catch (InvalidBalanceUpdateException)
         {
-            Console.WriteLine("ERROR: Invalid withdrawl amount");
+            Console.WriteLine("ERROR: Invalid withdrawal amount");
         }
 
         // display updated account details
         Console.WriteLine($"Account #{account_id}");
         Console.WriteLine($"Date: {GetTodaysDateString()}");
-        Console.WriteLine($"Account #{account_id}");
+        Console.WriteLine($"Withdrawn {Math.Abs(amount)}");
         Console.WriteLine($"Balance: {_AccountDAL.GetBalance(account_id)}");
     }
 
