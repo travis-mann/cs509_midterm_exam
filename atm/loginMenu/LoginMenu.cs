@@ -2,50 +2,44 @@
 
 public class LoginMenu: ILoginMenu
 {
-    private readonly static int InvalidUserID = -1;
     private IInputGetter _InputGetter;
+    private IUserDAL _UserDAL;
+    private IRegexConstants _RegexConstants;
 
-    public LoginMenu(IInputGetter InputGetter)
+    public LoginMenu(IInputGetter InputGetter, IUserDAL UserDAL, IRegexConstants RegexConstants)
     {
         _InputGetter = InputGetter;
+        _UserDAL = UserDAL;
+        _RegexConstants = RegexConstants;
     }
 
     public int Login()
     {
-
-        int user_id = InvalidUserID;
-        while (user_id == InvalidUserID)
+        int? user_id = null;
+        while (user_id == null)
         {
-            string login = _InputGetter.GetInput(input => new Regex("([a-z]|[A-Z]|[0-9])+").Match(input).Success, "Enter login: ");
-            int pin = Convert.ToInt16(_InputGetter.GetInput(input => new Regex("[0-9]{5}").Match(input).Success, "Enter pin: "));
-            user_id = GetUserID(login, pin);
-            if (user_id == InvalidUserID) {
-                Console.WriteLine("ERROR: invalid user credentials, please try again");
-            }
+            user_id = LoginAttemptHandler();
         }
         Console.WriteLine("login success!");
-        return user_id;
+        return Convert.ToInt32(user_id);
     }
 
-    private static int GetUserID(string username, int pin) 
+    private int? LoginAttemptHandler()
     {
-        // search database for user id associated with given credentials
-        using (var context = new Context())
-        {
-            IQueryable<int> query = from table in context.User
-                                    where table.login == username
-                                    & table.pin == pin
-                                    select table.id;
 
-            int[] user_ids = query.ToArray();
-            if (user_ids.Length > 0)
-            {
-                return user_ids[0];
-            }
-            else
-            {
-                return InvalidUserID;
-            }
+        string login = _InputGetter.GetInput(input => new Regex(_RegexConstants.login).Match(input).Success, "Enter login: ");
+        try
+        {
+            UserRepository user = _UserDAL.GetUser(login);
+            int pin = Convert.ToInt16(_InputGetter.GetInput(input => new Regex(_RegexConstants.pin).Match(input).Success, "Enter pin: "));
+            if (user.pin == pin)
+                return user.id;
+            return null;
+        }
+        catch (UserNotFoundException)
+        {
+            Console.WriteLine($"ERROR: Username \"{login}\" not found, try again.");
+            return null;
         }
     }
 }

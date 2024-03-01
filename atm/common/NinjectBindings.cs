@@ -9,7 +9,11 @@ public class NinjectBindings : NinjectModule
         Bind<IMenuCreator>().To<MenuCreator>();
         Bind<IMenu>().To<Menu>();
         Bind<IInputGetter>().To<InputGetter>();
+        
         Bind<IAccountDAL>().To<AccountDAL>();
+        Bind<IUserDAL>().To<UserDAL>();
+        Bind<IStatusDAL>().To<StatusDAL>();
+
         Bind<IWithdrawCashMenuOption>().To<WithdrawCashMenuOption>();
         Bind<IDepositCashMenuOption>().To<DepositCashMenuOption>();
         Bind<IDisplayBalanceMenuOption>().To<DisplayBalanceMenuOption>();
@@ -17,5 +21,7 @@ public class NinjectBindings : NinjectModule
         Bind<IDeleteExistingAccountMenuOption>().To<DeleteExistingAccountMenuOption>();
         Bind<IUpdateAccountInformationMenuOption>().To<UpdateAccountInformationMenuOption>();
         Bind<ISearchForAccountMenuOption>().To<SearchForAccountMenuOption>();
+
+        Bind<IRegexConstants>().To<RegexConstants>();
     }
 }

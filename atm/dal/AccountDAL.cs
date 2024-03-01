@@ -23,37 +23,48 @@ class InvalidBalanceUpdateException : Exception
 
 public class AccountDAL: IAccountDAL
 {
-
-    public void UpdateBalance(int AmountToAdd, int AccountID)
+    public int CreateAccount(int userID, int statusID, int balance)
     {
-        using (var context = new Context())
+        using (Context context = new())
         {
-            AccountRepository account = GetAccount(AccountID, context);
-            if (account.balance + AmountToAdd < 0)
-            {
-                throw new InvalidBalanceUpdateException(account.balance, AmountToAdd, AccountID);
-            }
-            account.balance += AmountToAdd;
+            AccountRepository account = new AccountRepository(userID, statusID, balance);
+            context.Account.Add(account);
             context.SaveChanges();
+            return account.id;
         }
     }
-
-    public int GetBalance(int AccountID)
+    
+    public int UpdateBalance(int amountToAdd, int accountID)
     {
-        using (var context = new Context())
+        using (Context context = new())
         {
-            AccountRepository account = GetAccount(AccountID, context);
+            AccountRepository account = GetAccount(accountID, context);
+            if (account.balance + amountToAdd < 0)
+            {
+                throw new InvalidBalanceUpdateException(account.balance, amountToAdd, accountID);
+            }
+            account.balance += amountToAdd;
+            context.SaveChanges();
             return account.balance;
         }
     }
 
-    public int GetAccountIDFromUser(int UserID) 
+    public int GetBalance(int accountID)
+    {
+        using (Context context = new())
+        {
+            AccountRepository account = GetAccount(accountID, context);
+            return account.balance;
+        }
+    }
+
+    public int GetAccountIDFromUserID(int userID) 
     {
         try
         {
-            using (var context = new Context())
+            using (Context context = new())
             {
-                var result = context.Account.Single(a => a.user_id == UserID);
+                AccountRepository result = context.Account.Single(a => a.user_id == userID);
                 return result.id;
             }
         }
@@ -63,16 +74,15 @@ public class AccountDAL: IAccountDAL
         }
     }
 
-    private AccountRepository GetAccount(int AccountID, Context context)
+    private AccountRepository GetAccount(int accountID, Context context)
     {
         try
         {
-            return context.Account.Single(a => a.id == AccountID);
+            return context.Account.Single(a => a.id == accountID);
         }
         catch (InvalidOperationException)
         {
-            throw new AccountNotFoundException(AccountID);
+            throw new AccountNotFoundException(accountID);
         }
     }
 }
-

@@ -1,10 +1,11 @@
 ﻿public interface IAccountDAL
 {
+    public int CreateAccount(int userID, int statusID, int balance);
 
-    public void UpdateBalance(int AmountToAdd, int AccountID);
+    public int UpdateBalance(int amountToAdd, int accountID);
 
-    public int GetBalance(int AccountID);
+    public int GetBalance(int accountID);
 
-    public int GetAccountIDFromUser(int UserID);
+    public int GetAccountIDFromUserID(int userID);
 }
 

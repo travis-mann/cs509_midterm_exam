@@ -11,7 +11,7 @@
 
     public void Run(int user_id)
     {
-        int account_id = _AccountDAL.GetAccountIDFromUser(user_id);
+        int account_id = _AccountDAL.GetAccountIDFromUserID(user_id);
 
         // display account details
         Console.WriteLine($"Account #{account_id}");
