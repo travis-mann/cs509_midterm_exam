@@ -67,13 +67,13 @@ internal class UpdateAccountInformationMenuOption : IUpdateAccountInformationMen
     private void UpdateStatus(int userID)
     {
         string status = _InputGetter.GetInput(
-            input => _StatusDAL.getStatusID(input) != 0 || input.Length == 0,
+            input => _StatusDAL.GetStatusID(input) != 0 || input.Length == 0,
             $"Status: "
             );
 
         if (status.Length > 0)
         {
-            _UserDAL.UpdateUserStatus(userID, (int)_StatusDAL.getStatusID(status));
+            _UserDAL.UpdateUserStatus(userID, (int)_StatusDAL.GetStatusID(status));
             Console.WriteLine($"Status updated to \"{status}\"");
             return;
         }

@@ -36,7 +36,7 @@ internal class CreateNewAccountMenuOption : ICreateNewAccountMenuOption
 
         // create new account
         int newUserID = _UserDAL.CreateUser(login, pin, name, status, "customer");
-        int newAccountID = _AccountDAL.CreateAccount(newUserID, (int)_StatusDAL.getStatusID(status), balance);
+        int newAccountID = _AccountDAL.CreateAccount(newUserID, (int)_StatusDAL.GetStatusID(status), balance);
         Console.WriteLine($"Account Successfully Created – the account number assigned is: {newAccountID}");
     }
 
@@ -75,7 +75,7 @@ internal class CreateNewAccountMenuOption : ICreateNewAccountMenuOption
     private string GetStatus()
     {
         return _InputGetter.GetInput(
-            input => _StatusDAL.getStatusID(input) != null,
+            input => _StatusDAL.GetStatusID(input) != null,
             "Status: "
             );
     }

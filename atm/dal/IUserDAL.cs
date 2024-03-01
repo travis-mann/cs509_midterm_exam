@@ -2,6 +2,8 @@
 {
     public string? GetUserLogin(int UserID);
     public string? GetUserName(int UserID);
+    public int GetUserStatus(int UserID);
+    public int GetUserPin(int UserID);
     public int GetUserID(string login);
     public int CreateUser(string login, int pin, string name, string status, string role);
     public int DeleteUser(int UserID);
