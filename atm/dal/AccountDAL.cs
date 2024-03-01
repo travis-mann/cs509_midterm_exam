@@ -58,19 +58,39 @@ public class AccountDAL: IAccountDAL
         }
     }
 
-    public int GetAccountIDFromUserID(int userID) 
+    public int GetUserID(int accountID)
     {
-        try
+        using (Context context = new())
         {
-            using (Context context = new())
-            {
-                AccountRepository result = context.Account.Single(a => a.user_id == userID);
-                return result.id;
-            }
+            AccountRepository account = GetAccount(accountID, context);
+            return account.user_id;
         }
-        catch (InvalidOperationException)
+    }
+
+    public int DeleteAccount(int accountID)
+    {
+        using (Context context = new())
         {
-            throw new AccountNotFoundException();
+            AccountRepository account = GetAccount(accountID, context);
+            context.Account.Remove(account);
+            context.SaveChanges();
+            return account.id;
+        }
+    }
+
+    public int GetAccountIDFromUserID(int userID)
+    {
+        using (Context context = new())
+        {
+            int? accountID = context.Account.Where(a => a.user_id == userID).Select(a => a.id).SingleOrDefault();
+            if (accountID == 0)
+            {
+                throw new AccountNotFoundException();
+            }
+            else
+            {
+                return (int)accountID;
+            }
         }
     }
 

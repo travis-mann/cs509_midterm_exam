@@ -4,5 +4,6 @@
     public string pin { get; } = "[0-9]{5}";
     public string balance { get; } = "[0-9]+";
     public string name { get; } = "([a-z]|[A-Z]| )+";
+    public string accountID { get; } = "[0-9]+";
 
 }

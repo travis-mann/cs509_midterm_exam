@@ -1,4 +1,5 @@
 ﻿using Org.BouncyCastle.Asn1.X509;
+using System.Linq;
 
 public class UserNotFoundException : Exception
 {
@@ -9,6 +10,12 @@ public class UserNotFoundException : Exception
 
     public UserNotFoundException(string login)
         : base($"ERROR: User \"{login}\" not found")
+    {
+
+    }
+
+    public UserNotFoundException(int id)
+        : base($"ERROR: User id {id} not found")
     {
 
     }
@@ -31,19 +38,19 @@ public class DuplicateUserException : Exception
 
 public class UserDAL: IUserDAL
 {
-    public UserRepository GetUser(string login)
+    public string GetUserLogin(int UserID)
     {
         using (Context context = new())
         {
-            UserRepository? user = context.User.SingleOrDefault(a => a.login == login);
-            if (user == null)
-            {
-                throw new UserNotFoundException(login);
-            }
-            else
-            {
-                return (UserRepository)user;
-            }
+            return GetUser(UserID, context).login;
+        }
+    }
+
+    public string GetUserName(int UserID)
+    {
+        using (Context context = new())
+        {
+            return GetUser(UserID, context).name;
         }
     }
 
@@ -54,7 +61,7 @@ public class UserDAL: IUserDAL
             // check if user already exists
             try
             {
-                UserRepository duplicateUser = GetUser(login);
+                int duplicateUserID = GetUserID(login);
                 throw new DuplicateUserException();
             }
             catch (UserNotFoundException)
@@ -69,22 +76,72 @@ public class UserDAL: IUserDAL
         }
     }
 
-    public int DeleteUser(string login)
+    public int DeleteUser(int UserID)
     {
-        using (Context context = new Context())
+        using (Context context = new())
         {
-            UserRepository user;
-            try
-            {
-                user = context.User.Single(u => u.login == login);
-            }
-            catch (InvalidOperationException)
-            {
-                throw new UserNotFoundException(login);
-            }
+            UserRepository user = GetUser(UserID, context);
             context.User.Remove(user);
             context.SaveChanges();
             return user.id;
+        }
+    }
+
+    public bool IsValidPin(string login, int pin)
+    {
+        using (Context context = new())
+        {
+            int? userID = context.User.Where(u => u.login == login && u.pin == pin).Select(u => u.id).SingleOrDefault();
+            if (userID == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
+
+    public bool IsValidLogin(string login)
+    {
+        try
+        {
+            GetUserID(login);
+            return true;
+        }
+        catch (UserNotFoundException)
+        {
+            return false;
+        }
+    }
+
+    public int GetUserID(string login)
+    {
+        using (Context context = new())
+        {
+            int? userID = context.User.Where(u => u.login == login).Select(u => u.id).SingleOrDefault();
+            if (userID == 0)
+            {
+                throw new UserNotFoundException(login);
+            }
+            else
+            {
+                return (int)userID;
+            }
+        }
+    }
+
+    private UserRepository GetUser(int userID, Context context)
+    {
+        UserRepository? user = context.User.SingleOrDefault(u => u.id == userID);
+        if (user == null)
+        {
+            throw new UserNotFoundException(userID);
+        }
+        else
+        {
+            return user;
         }
     }
 }

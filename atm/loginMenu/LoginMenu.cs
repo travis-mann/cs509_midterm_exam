@@ -21,25 +21,26 @@ public class LoginMenu: ILoginMenu
             user_id = LoginAttemptHandler();
         }
         Console.WriteLine("login success!");
-        return Convert.ToInt32(user_id);
+        return (int)user_id;
     }
 
     private int? LoginAttemptHandler()
     {
 
         string login = _InputGetter.GetInput(input => new Regex(_RegexConstants.login).Match(input).Success, "Enter login: ");
-        try
-        {
-            UserRepository user = _UserDAL.GetUser(login);
-            int pin = Convert.ToInt16(_InputGetter.GetInput(input => new Regex(_RegexConstants.pin).Match(input).Success, "Enter pin: "));
-            if (user.pin == pin)
-                return user.id;
-            return null;
-        }
-        catch (UserNotFoundException)
+        if (!_UserDAL.IsValidLogin(login))
         {
             Console.WriteLine($"ERROR: Username \"{login}\" not found, try again.");
             return null;
         }
+
+        int pin = Convert.ToInt16(_InputGetter.GetInput(input => new Regex(_RegexConstants.pin).Match(input).Success, "Enter pin: "));
+        if (!_UserDAL.IsValidPin(login, pin))
+        {
+            Console.WriteLine($"ERROR: Invalid pin");
+            return null;
+        }
+
+        return _UserDAL.GetUserID(login);
     }
 }
