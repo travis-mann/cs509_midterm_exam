@@ -7,5 +7,4 @@
     public int DeleteUser(int UserID);
     public bool IsValidPin(string login, int pin);
     public bool IsValidLogin(string login);
-
 }

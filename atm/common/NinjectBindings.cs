@@ -12,6 +12,8 @@ public class NinjectBindings : NinjectModule
         
         Bind<IAccountDAL>().To<AccountDAL>();
         Bind<IUserDAL>().To<UserDAL>();
+        Bind<IUserDALWithUpdate>().To<UserDALWithUpdate>();
+        
         Bind<IStatusDAL>().To<StatusDAL>();
 
         Bind<IWithdrawCashMenuOption>().To<WithdrawCashMenuOption>();
