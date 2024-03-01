@@ -4,13 +4,15 @@ public class Menu: IMenu
 {
     private IMenuOption[] _MenuOptions;
     private IInputGetter _InputGetter;
+    private IRegexConstants _RegexConstants;
 
     private int ExitIndex;
     
-    public Menu(IMenuOption[] menuOptions, IInputGetter InputGetter)
+    public Menu(IMenuOption[] menuOptions, IInputGetter InputGetter, IRegexConstants RegexConstants)
     {
         _MenuOptions = menuOptions;
         _InputGetter = InputGetter;
+        _RegexConstants = RegexConstants;
         ExitIndex = menuOptions.Length + 1;
     }
 
@@ -35,7 +37,7 @@ public class Menu: IMenu
 
     private bool isValidSelection(string input)
     {
-        if (!new Regex("[0-9]+").Match(input).Success)
+        if (!new Regex(_RegexConstants.menuOptionSelection).Match(input).Success)
             return false;
 
         if (Convert.ToInt16(input) > ExitIndex)

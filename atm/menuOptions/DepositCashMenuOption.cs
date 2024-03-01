@@ -28,13 +28,13 @@ internal class DepositCashMenuOption : IDepositCashMenuOption
         // display updated account details
         Console.WriteLine($"Account #{account_id}");
         Console.WriteLine($"Date: {GetTodaysDateString()}");
-        Console.WriteLine($"Deposited {amount}");
+        Console.WriteLine($"Deposited: {amount}");
         Console.WriteLine($"Balance: {balance}");
     }
 
     private static string GetTodaysDateString()
     {
-        return DateTime.Now.ToString("MM/d/yyyy");
+        return DateTime.Now.ToString("MM/dd/yyyy");
     }
 
     private bool isValidInput(string input)

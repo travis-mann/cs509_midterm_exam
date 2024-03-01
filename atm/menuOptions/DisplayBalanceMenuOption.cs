@@ -21,6 +21,6 @@
 
     private static string GetTodaysDateString()
     {
-        return DateTime.Now.ToString("MM/d/yyyy");
+        return DateTime.Now.ToString("MM/dd/yyyy");
     }
 }
