@@ -23,6 +23,7 @@ public class Menu: IMenu
             int selection = Convert.ToInt16(_InputGetter.GetInput(isValidSelection, "Enter selection: "));
             if (selection == ExitIndex)
             {
+                Console.Clear();
                 runMenu = false;
             }
             else
