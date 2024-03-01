@@ -132,7 +132,7 @@ public class UserDAL: IUserDAL
         }
     }
 
-    private UserRepository GetUser(int userID, Context context)
+    protected UserRepository GetUser(int userID, Context context)
     {
         UserRepository? user = context.User.SingleOrDefault(u => u.id == userID);
         if (user == null)
