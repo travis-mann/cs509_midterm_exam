@@ -1,20 +1,20 @@
 CREATE DATABASE atm;
 
-CREATE TABLE status (
+CREATE TABLE atm.status (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL UNIQUE
 );
 
-INSERT INTO status (name) VALUES ('active'), ('disabled');
+INSERT INTO atm.status (name) VALUES ('active'), ('disabled');
 
-CREATE TABLE role (
+CREATE TABLE atm.role (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL UNIQUE
 );
 
-INSERT INTO role (name) VALUES ('admin'), ('customer');
+INSERT INTO atm.role (name) VALUES ('admin'), ('customer');
 
-CREATE TABLE user (
+CREATE TABLE atm.user (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     login VARCHAR(255) NOT NULL UNIQUE,
     pin INT NOT NULL,
@@ -23,13 +23,13 @@ CREATE TABLE user (
     FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
-insert into user (login, pin, name, role_id)
+insert into atm.user (login, pin, name, role_id)
 VALUES 
-('devadmin', 12345, 'John Doe', (select id from role where name = 'admin')),
-('devcust', 12345, 'Jane Doe', (select id from role where name = 'customer'))
+('devadmin', 12345, 'John Doe', (select id from atm.role where name = 'admin')),
+('devcust', 12345, 'Jane Doe', (select id from atm.role where name = 'customer'))
 ;
 
-CREATE TABLE account (
+CREATE TABLE atm.account (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user(id),
@@ -38,7 +38,7 @@ CREATE TABLE account (
     balance int NOT NULL
 );
 
-insert into account (user_id, status_id, balance)
+insert into atm.account (user_id, status_id, balance)
 VALUES 
-(2, (select id from status where name = 'active'), 5000)
+(2, (select id from atm.status where name = 'active'), 5000)
 ;
