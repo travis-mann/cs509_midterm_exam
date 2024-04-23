@@ -1,62 +1,93 @@
+namespace Atm.UserMenu;
+
+using System.Globalization;
 using System.Text.RegularExpressions;
+using Atm.Dal;
+using Atm.Common;
+using Atm.MenuOptions;
 
-public class Menu: IMenu
+public class Menu : IMenu
 {
-    private IMenuOption[] _MenuOptions;
-    private IInputGetter _InputGetter;
-    private IRegexConstants _RegexConstants;
+    private readonly IInputGetter inputGetter;
+    private readonly IAccountDAL accountDAL;
 
-    private int ExitIndex;
-    
-    public Menu(IMenuOption[] menuOptions, IInputGetter InputGetter, IRegexConstants RegexConstants)
+    public Menu(IInputGetter inputGetter, IAccountDAL accountDAL)
     {
-        _MenuOptions = menuOptions;
-        _InputGetter = InputGetter;
-        _RegexConstants = RegexConstants;
-        ExitIndex = menuOptions.Length + 1;
+        this.accountDAL = accountDAL;
+        this.inputGetter = inputGetter;
     }
 
-    public void Run(int userId)
+    public void Run(int accountId)
     {
-        bool runMenu = true;
+        var menuOptions = this.GetMenuOptions(accountId);
+        var exitIndex = menuOptions.Length + 1;
+        var runMenu = true;
         while (runMenu)
         {
-            DisplayOptions();
-            int selection = Convert.ToInt16(_InputGetter.GetInput(isValidSelection, "Enter selection: "));
-            if (selection == ExitIndex)
+            DisplayOptions(exitIndex, menuOptions);
+            int selection = Convert.ToInt16(this.inputGetter.GetInput((input) => IsValidSelection(input, exitIndex, this.inputGetter), "Enter selection: "), new CultureInfo("en-US"));
+            if (selection == exitIndex)
             {
                 Console.Clear();
                 runMenu = false;
             }
             else
             {
-                _MenuOptions[selection - 1].Run(userId);
+                menuOptions[selection - 1].Run(accountId, this.inputGetter, this.accountDAL);
             }
         }
     }
 
-    private bool isValidSelection(string input)
+    private IMenuOption[] GetMenuOptions(int accountId)
     {
-        if (!new Regex(_RegexConstants.menuOptionSelection).Match(input).Success)
-            return false;
+        var role = this.accountDAL.GetRole(accountId);
+        if (role == "admin")
+        {
+            return new IMenuOption[] {
+                new CreateNewAccountMenuOption(),
+                new DeleteExistingAccountMenuOption(),
+                new UpdateAccountInformationMenuOption(),
+                new SearchForAccountMenuOption()
+            };
+        }
+        else
+        {
+            return new IMenuOption[] {
+                new WithdrawCashMenuOption(),
+                new DisplayBalanceMenuOption(),
+                new DepositCashMenuOption()
+            };
+        }
+    }
 
-        if (Convert.ToInt16(input) > ExitIndex)
+    private static bool IsValidSelection(string input, int exitIndex, IInputGetter inputGetter)
+    {
+        if (!new Regex(inputGetter.RegexConstants.MenuOptionSelection).Match(input).Success)
+        {
             return false;
+        }
 
-        if (Convert.ToInt16(input) <= 0)
+        if (Convert.ToInt16(input, new CultureInfo("en-US")) > exitIndex)
+        {
             return false;
+        }
+
+        if (Convert.ToInt16(input, new CultureInfo("en-US")) <= 0)
+        {
+            return false;
+        }
 
         return true;
     }
 
-    private void DisplayOptions()
+    private static void DisplayOptions(int exitIndex, IMenuOption[] menuOptions)
     {
-        int optionIndex = 1;
-        foreach (IMenuOption menuOption in _MenuOptions)
+        var optionIndex = 1;
+        foreach (var menuOption in menuOptions)
         {
             Console.WriteLine($"{optionIndex}....{menuOption.Name}");
             optionIndex++;
         }
-        Console.WriteLine($"{ExitIndex}....Exit");
+        Console.WriteLine($"{exitIndex}....Exit");
     }
 }

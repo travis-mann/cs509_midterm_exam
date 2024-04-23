@@ -1,10 +1,12 @@
-﻿public interface IRegexConstants
-{
-    public string login { get; }
-    public string pin { get; }
-    public string balance { get; }
-    public string name { get; }
-    public string accountID { get; }
-    public string menuOptionSelection { get; }
-}
+namespace Atm.Common;
 
+public interface IRegexConstants
+{
+    public string Login { get; }
+    public string Pin { get; }
+    public string Balance { get; }
+    public string Name { get; }
+    public string AccountID { get; }
+    public string MenuOptionSelection { get; }
+    public string Status { get; }
+}

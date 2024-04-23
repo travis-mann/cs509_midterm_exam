@@ -1,82 +1,58 @@
+namespace Atm.MenuOptions;
 using System.Text.RegularExpressions;
+using Atm.Dal;
+using Atm.Common;
+using System.Globalization;
 
-internal sealed class CreateNewAccountMenuOption : ICreateNewAccountMenuOption
+internal sealed class CreateNewAccountMenuOption : IMenuOption
 {
     public string Name { get; } = "Create New Account";
-    private IInputGetter _InputGetter;
-    private IUserDAL _UserDAL;
-    private IAccountDAL _AccountDAL;
-    private IStatusDAL _StatusDAL;
-    private IRegexConstants _RegexConstants;
 
-    public CreateNewAccountMenuOption(IInputGetter InputGetter, IAccountDAL AccountDAL, IUserDAL UserDAL, IStatusDAL StatusDAL, IRegexConstants RegexConstants)
-    {
-        _InputGetter = InputGetter;
-        _UserDAL = UserDAL;
-        _AccountDAL = AccountDAL;
-        _StatusDAL = StatusDAL;
-        _RegexConstants = RegexConstants;
-    }
+    public CreateNewAccountMenuOption() { }
 
-    public void Run(int userID)
+    public void Run(int accountId, IInputGetter inputGetter, IAccountDAL accountDAL)
     {
-        string login = GetLogin();
+        var login = GetLogin(inputGetter);
         // check if user already exists
-        if (_UserDAL.IsValidLogin(login))
+        if (accountDAL.IsValidLogin(login))
         {
             Console.WriteLine($"ERROR: User {login} already exists. Canceling create operation.");
             return;
         }
 
         // get remaining user details
-        int pin = GetPin();
-        string name = GetName();
-        int balance = GetBalance();
-        string status = GetStatus();
+        var pin = GetPin(inputGetter);
+        var name = GetName(inputGetter);
+        var balance = GetBalance(inputGetter);
+        var status = GetStatus(inputGetter);
 
         // create new account
-        int newUserID = _UserDAL.CreateUser(login, pin, name, status, "customer");
-        int newAccountID = _AccountDAL.CreateAccount(newUserID, (int)_StatusDAL.GetStatusID(status), balance);
+        var newAccountID = accountDAL.CreateAccount(login, pin, name, "customer", status, balance);
         Console.WriteLine($"Account Successfully Created – the account number assigned is: {newAccountID}");
     }
 
-    private string GetLogin()
-    {
-        return _InputGetter.GetInput(
-            input => new Regex(_RegexConstants.login).Match(input).Success,
+    private static string GetLogin(IInputGetter inputGetter) => inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.Login).Match(input).Success,
             "Login: "
             );
-    }
 
-    private int GetPin()
-    {
-        return Convert.ToInt32(_InputGetter.GetInput(
-            input => new Regex(_RegexConstants.pin).Match(input).Success,
+    private static int GetPin(IInputGetter inputGetter) => Convert.ToInt32(inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.Pin).Match(input).Success,
             "Pin Code: "
-            ));
-    }
+            ), new CultureInfo("en-US"));
 
-    private string GetName()
-    {
-        return _InputGetter.GetInput(
-            input => new Regex(_RegexConstants.name).Match(input).Success,
+    private static string GetName(IInputGetter inputGetter) => inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.Name).Match(input).Success,
             "Holders Name: "
             );
-    }
 
-    private int GetBalance()
-    {
-        return Convert.ToInt32(_InputGetter.GetInput(
-            input => new Regex(_RegexConstants.balance).Match(input).Success,
+    private static int GetBalance(IInputGetter inputGetter) => Convert.ToInt32(inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.Balance).Match(input).Success,
             "Starting Balance: "
-            ));
-    }
+            ), new CultureInfo("en-US"));
 
-    private string GetStatus()
-    {
-        return _InputGetter.GetInput(
-            input => _StatusDAL.GetStatusID(input) != 0,
+    private static string GetStatus(IInputGetter inputGetter) => inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.Status).Match(input).Success,
             "Status: "
             );
-    }
 }

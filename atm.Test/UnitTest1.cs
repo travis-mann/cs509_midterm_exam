@@ -1,4 +1,4 @@
-namespace atm.Test;
+namespace Atm.Test;
 
 public class UnitTest1
 {

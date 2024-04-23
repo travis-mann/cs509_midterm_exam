@@ -1,44 +1,31 @@
+namespace Atm.MenuOptions;
 using System.Text.RegularExpressions;
 using Atm.Dal;
+using Atm.Common;
+using System.Globalization;
 
-internal sealed class DeleteExistingAccountMenuOption : IDeleteExistingAccountMenuOption
+internal sealed class DeleteExistingAccountMenuOption : IMenuOption
 {
     public string Name { get; } = "Delete Existing Account";
-    private IInputGetter _InputGetter;
-    private IUserDAL _UserDAL;
-    private IAccountDAL _AccountDAL;
-    private IRegexConstants _RegexConstants;
 
-    public DeleteExistingAccountMenuOption(IInputGetter InputGetter, IAccountDAL AccountDAL, IUserDAL UserDAL, IStatusDAL StatusDAL, IRegexConstants RegexConstants) 
-    {
-        _InputGetter = InputGetter;
-        _UserDAL = UserDAL;
-        _AccountDAL = AccountDAL;
-        _RegexConstants = RegexConstants;
-    }
+    public DeleteExistingAccountMenuOption() { }
 
-    public void Run(int userID)
+    public void Run(int accountId, IInputGetter inputGetter, IAccountDAL accountDAL)
     {
         // get account number and customer to delete
-        int accountID = GetAccountID("Enter the account number to which you want to delete: ");
-        int custUserID;
-        try
+        var custAccountId = GetAccountID("Enter the account number to which you want to delete: ", inputGetter);
+        if (!accountDAL.IsValidAccount(custAccountId))
         {
-            custUserID = _AccountDAL.GetUserID(accountID);
-        }
-        catch (AccountNotFoundException)
-        {
-            Console.WriteLine($"ERROR: Account {accountID} does not exist. Delete operation canceled.");
+            Console.WriteLine($"ERROR: Account {custAccountId} does not exist. Delete operation canceled.");
             return;
         }
 
         // confirm deletion
-        int confirmAccountID = GetAccountID($"You wish to delete the account held by {_UserDAL.GetUserName(custUserID)}. If this information is correct, please re-enter the account number: ");
+        var confirmAccountID = GetAccountID($"You wish to delete the account held by {accountDAL.GetUserName(custAccountId)}. If this information is correct, please re-enter the account number: ", inputGetter);
 
-        if (accountID == confirmAccountID)
+        if (custAccountId == confirmAccountID)
         {
-            _AccountDAL.DeleteAccount(accountID);
-            _UserDAL.DeleteUser(custUserID);
+            accountDAL.DeleteAccount(custAccountId);
             Console.WriteLine("Account Deleted Successfully");
         }
         else
@@ -47,11 +34,8 @@ internal sealed class DeleteExistingAccountMenuOption : IDeleteExistingAccountMe
         }
     }
 
-    private int GetAccountID(string prompt)
-    {
-        return Convert.ToInt32(_InputGetter.GetInput(
-            input => new Regex(_RegexConstants.accountID).Match(input).Success,
+    private static int GetAccountID(string prompt, IInputGetter inputGetter) => Convert.ToInt32(inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.AccountID).Match(input).Success,
             prompt
-            ));
-    }
+            ), new CultureInfo("en-US"));
 }

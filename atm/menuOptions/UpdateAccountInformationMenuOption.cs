@@ -1,113 +1,96 @@
+namespace Atm.MenuOptions;
 using System.Text.RegularExpressions;
 using Atm.Dal;
+using Atm.Common;
+using System.Globalization;
 
-internal sealed class UpdateAccountInformationMenuOption : IUpdateAccountInformationMenuOption
+internal sealed class UpdateAccountInformationMenuOption : IMenuOption
 {
     public string Name { get; } = "Update Account Information";
-    private IInputGetter _InputGetter;
-    private IUserDALWithUpdate _UserDAL;
-    private IAccountDAL _AccountDAL;
-    private IStatusDAL _StatusDAL;
-    private IRegexConstants _RegexConstants;
 
-    public UpdateAccountInformationMenuOption(IInputGetter InputGetter, IAccountDAL AccountDAL, IUserDALWithUpdate UserDAL, IStatusDAL StatusDAL, IRegexConstants RegexConstants)
-    {
-        _InputGetter = InputGetter;
-        _UserDAL = UserDAL;
-        _AccountDAL = AccountDAL;
-        _StatusDAL = StatusDAL;
-        _RegexConstants = RegexConstants;
-    }
+    public UpdateAccountInformationMenuOption() { }
 
-    public void Run(int user_id)
+    public void Run(int accountId, IInputGetter inputGetter, IAccountDAL accountDAL)
     {
         // get account number and customer to update
-        int accountID = GetAccountID("Enter the account number: ");
-        int custUserID;
-        try
+        var custAccountId = GetAccountID("Enter the account number: ", inputGetter);
+        if (!accountDAL.IsValidAccount(custAccountId))
         {
-            custUserID = _AccountDAL.GetUserID(accountID);
-        }
-        catch (AccountNotFoundException)
-        {
-            Console.WriteLine($"ERROR: Account {accountID} does not exist. Update operation canceled.");
+            Console.WriteLine($"ERROR: Account {custAccountId} does not exist. Update operation canceled.");
             return;
         }
 
-        Console.WriteLine($"Starting update on account {accountID}. Press enter with no entry to skip a field.");
-        UpdateName(custUserID);
-        UpdateStatus(custUserID);
-        UpdateLogin(custUserID);
-        UpdatePin(custUserID);
+        Console.WriteLine($"Starting update on account {custAccountId}. Press enter with no entry to skip a field.");
+        UpdateName(custAccountId, inputGetter, accountDAL);
+        UpdateStatus(custAccountId, inputGetter, accountDAL);
+        UpdateLogin(custAccountId, inputGetter, accountDAL);
+        UpdatePin(custAccountId, inputGetter, accountDAL);
     }
 
-    private int GetAccountID(string prompt)
-    {
-        return Convert.ToInt32(_InputGetter.GetInput(
-            input => new Regex(_RegexConstants.accountID).Match(input).Success,
+    private static int GetAccountID(string prompt, IInputGetter inputGetter) => Convert.ToInt32(inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.AccountID).Match(input).Success,
             prompt
-            ));
-    }
+            ), new CultureInfo("en-US"));
 
-    private void UpdateName(int userID)
+    private static void UpdateName(int accountId, IInputGetter inputGetter, IAccountDAL accountDAL)
     {
-        string name = _InputGetter.GetInput(
-            input => new Regex(_RegexConstants.name).Match(input).Success || input.Length == 0,
-            $"Holder ({_UserDAL.GetUserName(userID)}): "
+        var name = inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.Name).Match(input).Success || input.Length == 0,
+            $"Holder ({accountDAL.GetUserName(accountId)}): "
             );
 
-        if (name.Length > 0 )
+        if (name.Length > 0)
         {
-            _UserDAL.UpdateUserName(userID, name);
+            _ = accountDAL.UpdateUserName(accountId, name);
             Console.WriteLine($"Holder updated to \"{name}\"");
             return;
         }
         Console.WriteLine("Holder skipped");
     }
 
-    private void UpdateStatus(int userID)
+    private static void UpdateStatus(int accountId, IInputGetter inputGetter, IAccountDAL accountDAL)
     {
-        string status = _InputGetter.GetInput(
-            input => _StatusDAL.GetStatusID(input) != 0 || input.Length == 0,
+        var status = inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.Status).Match(input).Success || input.Length == 0,
             $"Status: "
             );
 
         if (status.Length > 0)
         {
-            _UserDAL.UpdateUserStatus(userID, (int)_StatusDAL.GetStatusID(status));
+            _ = accountDAL.UpdateUserStatus(accountId, status);
             Console.WriteLine($"Status updated to \"{status}\"");
             return;
         }
         Console.WriteLine("Status skipped");
     }
 
-    private void UpdateLogin(int userID)
+    private static void UpdateLogin(int accountId, IInputGetter inputGetter, IAccountDAL accountDAL)
     {
-        string login = _InputGetter.GetInput(
-            input => new Regex(_RegexConstants.login).Match(input).Success || input.Length == 0,
-            $"Login ({_UserDAL.GetUserLogin(userID)}): "
+        var login = inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.Login).Match(input).Success || input.Length == 0,
+            $"Login ({accountDAL.GetUserLogin(accountId)}): "
             );
 
         if (login.Length > 0)
         {
-            _UserDAL.UpdateUserLogin(userID, login);
+            _ = accountDAL.UpdateUserLogin(accountId, login);
             Console.WriteLine($"Login updated to \"{login}\"");
             return;
         }
         Console.WriteLine("Login skipped");
     }
 
-    private void UpdatePin(int userID)
+    private static void UpdatePin(int accountId, IInputGetter inputGetter, IAccountDAL accountDAL)
     {
-        string pinStr = _InputGetter.GetInput(
-            input => new Regex(_RegexConstants.pin).Match(input).Success || input.Length == 0,
+        var pinStr = inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.Pin).Match(input).Success || input.Length == 0,
             // not shown to keep private from admin
             $"Pin Code: "
             );
 
         if (pinStr.Length > 0)
         {
-            _UserDAL.UpdateUserPin(userID, Convert.ToInt32(pinStr));
+            _ = accountDAL.UpdateUserPin(accountId, Convert.ToInt32(pinStr, new CultureInfo("en-US")));
             Console.WriteLine($"Pin updated to \"{pinStr}\"");
             return;
         }

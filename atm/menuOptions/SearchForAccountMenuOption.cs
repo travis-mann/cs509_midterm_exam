@@ -1,58 +1,41 @@
+namespace Atm.MenuOptions;
 using System.Text.RegularExpressions;
 using Atm.Dal;
+using Atm.Common;
+using System.Globalization;
 
-internal sealed class SearchForAccountMenuOption : ISearchForAccountMenuOption
+internal sealed class SearchForAccountMenuOption : IMenuOption
 {
     public string Name { get; } = "Search for Account";
-    private IInputGetter _InputGetter;
-    private IUserDAL _UserDAL;
-    private IAccountDAL _AccountDAL;
-    private IStatusDAL _StatusDAL;
-    private IRegexConstants _RegexConstants;
 
-    public SearchForAccountMenuOption(IInputGetter InputGetter, IAccountDAL AccountDAL, IUserDAL UserDAL, IStatusDAL StatusDAL, IRegexConstants RegexConstants)
-    {
-        _InputGetter = InputGetter;
-        _UserDAL = UserDAL;
-        _AccountDAL = AccountDAL;
-        _StatusDAL = StatusDAL;
-        _RegexConstants = RegexConstants;
-    }
+    public SearchForAccountMenuOption() { }
 
-    public void Run(int user_id)
+    public void Run(int accountId, IInputGetter inputGetter, IAccountDAL accountDAL)
     {
         // get account number and customer to display
-        int accountID = GetAccountID("Enter account number: ");
-        int custUserID;
-        try
+        var custAccountId = GetAccountID("Enter account number: ", inputGetter);
+        if (!accountDAL.IsValidAccount(custAccountId))
         {
-            custUserID = _AccountDAL.GetUserID(accountID);
-        }
-        catch (AccountNotFoundException)
-        {
-            Console.WriteLine($"ERROR: Account {accountID} does not exist. Delete operation canceled.");
+            Console.WriteLine($"ERROR: Account {custAccountId} does not exist. Delete operation canceled.");
             return;
         }
 
         // display info
-        DisplayAccountInfo(accountID, custUserID);
+        DisplayAccountInfo(custAccountId, accountDAL);
     }
 
-    private int GetAccountID(string prompt)
-    {
-        return Convert.ToInt32(_InputGetter.GetInput(
-            input => new Regex(_RegexConstants.accountID).Match(input).Success,
+    private static int GetAccountID(string prompt, IInputGetter inputGetter) => Convert.ToInt32(inputGetter.GetInput(
+            input => new Regex(inputGetter.RegexConstants.AccountID).Match(input).Success,
             prompt
-            ));
-    }
+            ), new CultureInfo("en-US"));
 
-    private void DisplayAccountInfo(int accountID, int custUserID)
+    private static void DisplayAccountInfo(int accountID, IAccountDAL accountDAL)
     {
         Console.WriteLine($"Account # {accountID}");
-        Console.WriteLine($"Holder: {_UserDAL.GetUserName(custUserID)}");
-        Console.WriteLine($"Balance: {_AccountDAL.GetBalance(accountID)}");
-        Console.WriteLine($"Status: {_StatusDAL.GetStatusFromID(_UserDAL.GetUserStatus(custUserID))}");
-        Console.WriteLine($"Login: {_UserDAL.GetUserLogin(custUserID)}");
-        Console.WriteLine($"Pin Code: {_UserDAL.GetUserPin(custUserID)}");
+        Console.WriteLine($"Holder: {accountDAL.GetUserName(accountID)}");
+        Console.WriteLine($"Balance: {accountDAL.GetBalance(accountID)}");
+        Console.WriteLine($"Status: {accountDAL.GetStatus(accountID)}");
+        Console.WriteLine($"Login: {accountDAL.GetUserLogin(accountID)}");
+        Console.WriteLine($"Pin Code: {accountDAL.GetPin(accountID)}");
     }
 }

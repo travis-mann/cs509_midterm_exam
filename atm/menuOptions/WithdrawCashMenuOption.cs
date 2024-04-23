@@ -1,32 +1,25 @@
+namespace Atm.MenuOptions;
 using System.Text.RegularExpressions;
 using Atm.Dal;
+using Atm.Common;
+using System.Globalization;
 
-internal sealed class WithdrawCashMenuOption : IWithdrawCashMenuOption
+internal sealed class WithdrawCashMenuOption : IMenuOption
 {
     public string Name { get; } = "Withdraw Cash";
 
-    private IInputGetter _InputGetter;
-    private IAccountDAL _AccountDAL;
-    private IRegexConstants _RegexConstants;
+    public WithdrawCashMenuOption() { }
 
-    public WithdrawCashMenuOption(IInputGetter InputGetter, IAccountDAL AccountDAL, IRegexConstants RegexConstants) 
-    {
-        _InputGetter = InputGetter;
-        _AccountDAL = AccountDAL;
-        _RegexConstants = RegexConstants;
-    }
-
-    public void Run(int user_id)
+    public void Run(int accountId, IInputGetter inputGetter, IAccountDAL accountDAL)
     {
         // get input
-        int amount = Convert.ToInt32(_InputGetter.GetInput(isValidInput, "Enter the withdrawal amount: ")) * -1;
-        int account_id = _AccountDAL.GetAccountIDFromUserID(user_id);
+        var amount = Convert.ToInt32(inputGetter.GetInput((input) => IsValidInput(input, inputGetter), "Enter the withdrawal amount: "), new CultureInfo("en-US")) * -1;
 
         // remove from account
         int amountWithdrawn;
         try
         {
-            _AccountDAL.UpdateBalance(amount, account_id);
+            _ = accountDAL.UpdateBalance(amount, accountId);
             Console.WriteLine("Cash Successfully Withdrawn");
             amountWithdrawn = Math.Abs(amount);
         }
@@ -37,21 +30,21 @@ internal sealed class WithdrawCashMenuOption : IWithdrawCashMenuOption
         }
 
         // display updated account details
-        Console.WriteLine($"Account #{account_id}");
+        Console.WriteLine($"Account #{accountId}");
         Console.WriteLine($"Date: {GetTodaysDateString()}");
         Console.WriteLine($"Withdrawn: {amountWithdrawn}");
-        Console.WriteLine($"Balance: {_AccountDAL.GetBalance(account_id)}");
+        Console.WriteLine($"Balance: {accountDAL.GetBalance(accountId)}");
     }
 
-    private static string GetTodaysDateString()
-    {
-        return DateTime.Now.ToString("MM/dd/yyyy");
-    }
+    private static string GetTodaysDateString() => DateTime.Now.ToString("MM/dd/yyyy", new CultureInfo("en-US"));
 
-    private bool isValidInput(string input)
+    private static bool IsValidInput(string input, IInputGetter inputGetter)
     {
-        if (!new Regex(_RegexConstants.balance).Match(input).Success)
+        if (!new Regex(inputGetter.RegexConstants.Balance).Match(input).Success)
+        {
             return false;
+        }
+
         return true;
     }
 }

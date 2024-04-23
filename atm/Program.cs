@@ -1,15 +1,15 @@
 using System.Reflection;
+using Atm.UserMenu;
 using Ninject;  // dependancy injection
 
-static void Run(ILoginMenu loginMenu, IMenuCreator menuCreator)
+static void Run(ILoginMenu loginMenu, IMenu menu)
 {
     Console.WriteLine("starting atm...");
 
     while (true)
     {
-        var user_id = loginMenu.Login();
-        var menu = menuCreator.GetMenu(user_id);
-        menu.Run(user_id);
+        var accountId = loginMenu.Login();
+        menu.Run(accountId);
     }
 }
 
@@ -17,5 +17,5 @@ var kernel = new StandardKernel();
 kernel.Load(Assembly.GetExecutingAssembly());
 
 var loginMenu = kernel.Get<ILoginMenu>();
-var menuCreator = kernel.Get<IMenuCreator>();
-Run(loginMenu, menuCreator);
+var menu = kernel.Get<IMenu>();
+Run(loginMenu, menu);

@@ -1,46 +1,47 @@
-﻿using System.Text.RegularExpressions;
+namespace Atm.LoginMenu;
+using Atm.Dal;
+using Atm.Common;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
-public class LoginMenu: ILoginMenu
+public class LoginMenu : ILoginMenu
 {
-    private IInputGetter _InputGetter;
-    private IUserDAL _UserDAL;
-    private IRegexConstants _RegexConstants;
+    private readonly IInputGetter inputGetter;
+    private readonly IAccountDAL accountDAL;
 
-    public LoginMenu(IInputGetter InputGetter, IUserDAL UserDAL, IRegexConstants RegexConstants)
+    public LoginMenu(IInputGetter inputGetter, IAccountDAL accountDAL)
     {
-        _InputGetter = InputGetter;
-        _UserDAL = UserDAL;
-        _RegexConstants = RegexConstants;
+        this.inputGetter = inputGetter;
+        this.accountDAL = accountDAL;
     }
 
     public int Login()
     {
-        int? user_id = null;
-        while (user_id == null)
+        int? accountId = null;
+        while (accountId == null)
         {
-            user_id = LoginAttemptHandler();
+            accountId = LoginAttemptHandler(this.inputGetter, this.accountDAL);
         }
         Console.WriteLine("login success!");
-        return (int)user_id;
+        return (int)accountId;
     }
 
-    private int? LoginAttemptHandler()
+    private static int? LoginAttemptHandler(IInputGetter inputGetter, IAccountDAL accountDAL)
     {
-
-        string login = _InputGetter.GetInput(input => new Regex(_RegexConstants.login).Match(input).Success, "Enter login: ");
-        if (!_UserDAL.IsValidLogin(login))
+        var login = inputGetter.GetInput(input => new Regex(inputGetter.RegexConstants.Login).Match(input).Success, "Enter login: ");
+        if (!accountDAL.IsValidLogin(login))
         {
             Console.WriteLine($"ERROR: Username \"{login}\" not found, try again.");
             return null;
         }
 
-        int pin = Convert.ToInt16(_InputGetter.GetInput(input => new Regex(_RegexConstants.pin).Match(input).Success, "Enter pin: "));
-        if (!_UserDAL.IsValidPin(login, pin))
+        int pin = Convert.ToInt16(inputGetter.GetInput(input => new Regex(inputGetter.RegexConstants.Pin).Match(input).Success, "Enter pin: "), new CultureInfo("en-US"));
+        if (!accountDAL.IsValidPin(login, pin))
         {
             Console.WriteLine($"ERROR: Invalid pin");
             return null;
         }
 
-        return _UserDAL.GetUserID(login);
+        return accountDAL.GetAccountIdFromLogin(login);
     }
 }

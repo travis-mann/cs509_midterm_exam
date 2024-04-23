@@ -1,4 +1,6 @@
-﻿public interface IMenu
+namespace Atm.UserMenu;
+
+public interface IMenu
 {
-    public void Run(int userId);
+    public void Run(int accountId);
 }

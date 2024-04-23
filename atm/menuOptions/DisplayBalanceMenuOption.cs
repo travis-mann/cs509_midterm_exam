@@ -1,26 +1,21 @@
-﻿internal sealed class DisplayBalanceMenuOption : IDisplayBalanceMenuOption
+namespace Atm.MenuOptions;
+using Atm.Dal;
+using Atm.Common;
+using System.Globalization;
+
+internal sealed class DisplayBalanceMenuOption : IMenuOption
 {
     public string Name { get; } = "Display Balance";
 
-    private IAccountDAL _AccountDAL;
+    public DisplayBalanceMenuOption() { }
 
-    public DisplayBalanceMenuOption(IAccountDAL AccountDAL)
+    public void Run(int accountId, IInputGetter inputGetter, IAccountDAL accountDAL)
     {
-        _AccountDAL = AccountDAL;
-    }
-
-    public void Run(int user_id)
-    {
-        int account_id = _AccountDAL.GetAccountIDFromUserID(user_id);
-
         // display account details
-        Console.WriteLine($"Account #{account_id}");
+        Console.WriteLine($"Account #{accountId}");
         Console.WriteLine($"Date: {GetTodaysDateString()}");
-        Console.WriteLine($"Balance: {_AccountDAL.GetBalance(account_id)}");
+        Console.WriteLine($"Balance: {accountDAL.GetBalance(accountId)}");
     }
 
-    private static string GetTodaysDateString()
-    {
-        return DateTime.Now.ToString("MM/dd/yyyy");
-    }
+    private static string GetTodaysDateString() => DateTime.Now.ToString("MM/dd/yyyy", new CultureInfo("en-US"));
 }

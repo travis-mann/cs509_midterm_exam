@@ -1,28 +1,27 @@
-﻿using System.Text.RegularExpressions;
+namespace Atm.Common;
 
-public class InputGetter: IInputGetter
+public class InputGetter : IInputGetter
 {
-    
-    public InputGetter() { }
-    
+    public IRegexConstants RegexConstants { get; } = new RegexConstants();
+
     public string GetInput(Func<string, bool> isValid, string fieldName, string? errorMessage = null)
     {
         // initial prompt
         Console.Write(fieldName);
-        string input = "";
+        var input = "";
 
-        bool inputValid = false;
+        var inputValid = false;
         while (!inputValid)
         {
             // get input
-            input = Console.ReadLine();
+            input = Console.ReadLine() ?? "";
 
             if (isValid(input))  // valid login string
             {
                 inputValid = true;
             }
             // Invalid login string
-            else if (errorMessage != null)  
+            else if (errorMessage != null)
             {
                 Console.Write(errorMessage);
             }
