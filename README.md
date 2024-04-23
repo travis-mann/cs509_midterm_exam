@@ -29,11 +29,11 @@ Purpose: Midterm exam for CS509 S24 "Design of Software Systems"
   - PROS:
   - CONS: 
 
-- docker
+- Docker
   - PROS:
   - CONS:
 
-- plain old computer
+- Plain old computer
   - PROS:
   - CONS: 
 
