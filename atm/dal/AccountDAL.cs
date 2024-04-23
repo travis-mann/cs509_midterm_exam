@@ -1,96 +1,86 @@
-﻿sealed class AccountNotFoundException: Exception
+namespace Atm.Dal;
+
+internal class AccountNotFoundException : Exception
 {
     public AccountNotFoundException()
     {
 
     }
 
-    public AccountNotFoundException(int AccountID)
-        : base($"ERROR: Account #{AccountID} not found")
+    public AccountNotFoundException(int accountId)
+        : base($"ERROR: Account #{accountId} not found")
     {
 
     }
 }
 
-sealed class InvalidBalanceUpdateException : Exception
+internal class InvalidBalanceUpdateException : Exception
 {
-    public InvalidBalanceUpdateException(int Balance, int Amount, int AccountID)
-        : base($"ERROR: Unable to add ${Amount} from Account #{AccountID } with total balance ${Balance}")
+    public InvalidBalanceUpdateException(int balance, int amount, int accountID)
+        : base($"ERROR: Unable to add ${amount} from Account #{accountID} with total balance ${balance}")
     {
 
     }
 }
 
-public class AccountDAL: IAccountDAL
+public class AccountDAL : IAccountDAL
 {
     public int CreateAccount(int userID, int statusID, int balance)
     {
-        using (Context context = new())
-        {
-            AccountRepository account = new AccountRepository(userID, statusID, balance);
-            context.Account.Add(account);
-            context.SaveChanges();
-            return account.id;
-        }
+        using Context context = new();
+        var account = new AccountRepository(userID, statusID, balance);
+        _ = context.Account.Add(account);
+        _ = context.SaveChanges();
+        return account.id;
     }
-    
+
     public int UpdateBalance(int amountToAdd, int accountID)
     {
-        using (Context context = new())
+        using Context context = new();
+        var account = GetAccount(accountID, context);
+        if (account.balance + amountToAdd < 0)
         {
-            AccountRepository account = GetAccount(accountID, context);
-            if (account.balance + amountToAdd < 0)
-            {
-                throw new InvalidBalanceUpdateException(account.balance, amountToAdd, accountID);
-            }
-            account.balance += amountToAdd;
-            context.SaveChanges();
-            return account.balance;
+            throw new InvalidBalanceUpdateException(account.balance, amountToAdd, accountID);
         }
+        account.balance += amountToAdd;
+        _ = context.SaveChanges();
+        return account.balance;
     }
 
     public int GetBalance(int accountID)
     {
-        using (Context context = new())
-        {
-            AccountRepository account = GetAccount(accountID, context);
-            return account.balance;
-        }
+        using Context context = new();
+        var account = GetAccount(accountID, context);
+        return account.balance;
     }
 
     public int GetUserID(int accountID)
     {
-        using (Context context = new())
-        {
-            AccountRepository account = GetAccount(accountID, context);
-            return account.userId;
-        }
+        using Context context = new();
+        var account = GetAccount(accountID, context);
+        return account.userId;
     }
 
     public int DeleteAccount(int accountID)
     {
-        using (Context context = new())
-        {
-            AccountRepository account = GetAccount(accountID, context);
-            context.Account.Remove(account);
-            context.SaveChanges();
-            return account.id;
-        }
+        using Context context = new();
+        var account = GetAccount(accountID, context);
+        _ = context.Account.Remove(account);
+        _ = context.SaveChanges();
+        return account.id;
     }
 
     public int GetAccountIDFromUserID(int userID)
     {
-        using (Context context = new())
+        using Context context = new();
+        int? accountID = context.Account.Where(a => a.userId == userID).Select(a => a.id).SingleOrDefault();
+        if (accountID == 0)
         {
-            int? accountID = context.Account.Where(a => a.userId == userID).Select(a => a.id).SingleOrDefault();
-            if (accountID == 0)
-            {
-                throw new AccountNotFoundException();
-            }
-            else
-            {
-                return (int)accountID;
-            }
+            throw new AccountNotFoundException();
+        }
+        else
+        {
+            return (int)accountID;
         }
     }
 

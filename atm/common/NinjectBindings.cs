@@ -1,4 +1,5 @@
 using Ninject.Modules;
+using Atm.Dal;
 
 public class NinjectBindings : NinjectModule
 {
