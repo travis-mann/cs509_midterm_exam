@@ -1,19 +1,17 @@
-﻿using Ninject.Modules;
+using Ninject.Modules;
 
 public class NinjectBindings : NinjectModule
 {
     public override void Load()
     {
-        Bind<IATMSystem>().To<ATMSystem>();
         Bind<ILoginMenu>().To<LoginMenu>();
         Bind<IMenuCreator>().To<MenuCreator>();
         Bind<IMenu>().To<Menu>();
         Bind<IInputGetter>().To<InputGetter>();
-        
+
         Bind<IAccountDAL>().To<AccountDAL>();
         Bind<IUserDAL>().To<UserDAL>();
         Bind<IUserDALWithUpdate>().To<UserDALWithUpdate>();
-        
         Bind<IStatusDAL>().To<StatusDAL>();
 
         Bind<IWithdrawCashMenuOption>().To<WithdrawCashMenuOption>();

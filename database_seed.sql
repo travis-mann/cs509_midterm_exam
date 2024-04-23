@@ -19,26 +19,26 @@ CREATE TABLE atm.user (
     login VARCHAR(255) NOT NULL UNIQUE,
     pin INT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    role_id int, 
-    FOREIGN KEY (role_id) REFERENCES role(id)
+    roleId int, 
+    FOREIGN KEY (roleId) REFERENCES role(id)
 );
 
-insert into atm.user (login, pin, name, role_id)
+insert into atm.user (login, pin, name, statusId, roleId)
 VALUES 
-('devadmin', 12345, 'John Doe', (select id from atm.role where name = 'admin')),
-('devcust', 12345, 'Jane Doe', (select id from atm.role where name = 'customer'))
+('devadmin', 12345, 'John Doe', (select id from atm.status where name = 'active'), (select id from atm.role where name = 'admin')),
+('devcust', 12345, 'Jane Doe', (select id from atm.status where name = 'active'), (select id from atm.role where name = 'customer'))
 ;
 
 CREATE TABLE atm.account (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user(id),
-    status_id int NOT NULL,
-    FOREIGN KEY (status_id) REFERENCES status(id),
+    userId INT NOT NULL,
+    FOREIGN KEY (userId) REFERENCES user(id),
+    statusId int NOT NULL,
+    FOREIGN KEY (statusId) REFERENCES status(id),
     balance int NOT NULL
 );
 
-insert into atm.account (user_id, status_id, balance)
+insert into atm.account (userId, statusId, balance)
 VALUES 
 (2, (select id from atm.status where name = 'active'), 5000)
 ;

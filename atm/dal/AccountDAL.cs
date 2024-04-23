@@ -1,4 +1,4 @@
-﻿class AccountNotFoundException: Exception
+﻿sealed class AccountNotFoundException: Exception
 {
     public AccountNotFoundException()
     {
@@ -12,7 +12,7 @@
     }
 }
 
-class InvalidBalanceUpdateException : Exception
+sealed class InvalidBalanceUpdateException : Exception
 {
     public InvalidBalanceUpdateException(int Balance, int Amount, int AccountID)
         : base($"ERROR: Unable to add ${Amount} from Account #{AccountID } with total balance ${Balance}")
@@ -63,7 +63,7 @@ public class AccountDAL: IAccountDAL
         using (Context context = new())
         {
             AccountRepository account = GetAccount(accountID, context);
-            return account.user_id;
+            return account.userId;
         }
     }
 
@@ -82,7 +82,7 @@ public class AccountDAL: IAccountDAL
     {
         using (Context context = new())
         {
-            int? accountID = context.Account.Where(a => a.user_id == userID).Select(a => a.id).SingleOrDefault();
+            int? accountID = context.Account.Where(a => a.userId == userID).Select(a => a.id).SingleOrDefault();
             if (accountID == 0)
             {
                 throw new AccountNotFoundException();
@@ -94,7 +94,7 @@ public class AccountDAL: IAccountDAL
         }
     }
 
-    private AccountRepository GetAccount(int accountID, Context context)
+    private static AccountRepository GetAccount(int accountID, Context context)
     {
         try
         {

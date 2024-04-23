@@ -5,10 +5,10 @@ public class InputGetter: IInputGetter
     
     public InputGetter() { }
     
-    public string GetInput(Func<string, bool> isValid, string prompt, string? errorMessage = null)
+    public string GetInput(Func<string, bool> isValid, string fieldName, string? errorMessage = null)
     {
         // initial prompt
-        Console.Write(prompt);
+        Console.Write(fieldName);
         string input = "";
 
         bool inputValid = false;

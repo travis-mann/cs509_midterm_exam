@@ -1,6 +1,6 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 
-internal class CreateNewAccountMenuOption : ICreateNewAccountMenuOption
+internal sealed class CreateNewAccountMenuOption : ICreateNewAccountMenuOption
 {
     public string Name { get; } = "Create New Account";
     private IInputGetter _InputGetter;
@@ -75,7 +75,7 @@ internal class CreateNewAccountMenuOption : ICreateNewAccountMenuOption
     private string GetStatus()
     {
         return _InputGetter.GetInput(
-            input => _StatusDAL.GetStatusID(input) != null,
+            input => _StatusDAL.GetStatusID(input) != 0,
             "Status: "
             );
     }

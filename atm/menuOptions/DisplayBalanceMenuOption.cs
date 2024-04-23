@@ -1,4 +1,4 @@
-﻿internal class DisplayBalanceMenuOption : IDisplayBalanceMenuOption
+﻿internal sealed class DisplayBalanceMenuOption : IDisplayBalanceMenuOption
 {
     public string Name { get; } = "Display Balance";
 

@@ -1,13 +1,21 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Ninject;  // dependancy injection
 
-class Program
+static void Run(ILoginMenu loginMenu, IMenuCreator menuCreator)
 {
-    private static void Main(string[] args)
+    Console.WriteLine("starting atm...");
+
+    while (true)
     {
-        var kernel = new StandardKernel();
-        kernel.Load(Assembly.GetExecutingAssembly());
-        var atm = kernel.Get<IATMSystem>();
-        atm.Run();
+        var user_id = loginMenu.Login();
+        var menu = menuCreator.GetMenu(user_id);
+        menu.Run(user_id);
     }
 }
+
+var kernel = new StandardKernel();
+kernel.Load(Assembly.GetExecutingAssembly());
+
+var loginMenu = kernel.Get<ILoginMenu>();
+var menuCreator = kernel.Get<IMenuCreator>();
+Run(loginMenu, menuCreator);

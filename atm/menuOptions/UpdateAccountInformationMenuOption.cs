@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-internal class UpdateAccountInformationMenuOption : IUpdateAccountInformationMenuOption
+internal sealed class UpdateAccountInformationMenuOption : IUpdateAccountInformationMenuOption
 {
     public string Name { get; } = "Update Account Information";
     private IInputGetter _InputGetter;

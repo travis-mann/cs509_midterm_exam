@@ -1,15 +1,15 @@
 ﻿public class AccountRepository
 {
-    public AccountRepository(int user_id, int status_id, int balance)
+    public AccountRepository(int userId, int statusId, int balance)
     {
-        this.user_id = user_id;
-        this.status_id = status_id;
+        this.userId = userId;
+        this.statusId = statusId;
         this.balance = balance;
     }
 
     public int id { get; set; }
-    public int user_id { get; set; }
-    public int status_id { get; set; }
+    public int userId { get; set; }
+    public int statusId { get; set; }
     public int balance { get; set; }
 }
 

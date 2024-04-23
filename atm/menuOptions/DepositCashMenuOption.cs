@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-internal class DepositCashMenuOption : IDepositCashMenuOption
+internal sealed class DepositCashMenuOption : IDepositCashMenuOption
 {
     public string Name { get; } = "Deposit Cash";
 

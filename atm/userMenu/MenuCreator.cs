@@ -4,7 +4,7 @@ public class NoRoleFoundException: Exception
 
 }
 
-internal class MenuCreator : IMenuCreator
+internal sealed class MenuCreator : IMenuCreator
 {
     private IInputGetter _InputGetter;
     private Dictionary<string, IMenuOption[]> menuItemMap;
@@ -50,7 +50,7 @@ internal class MenuCreator : IMenuCreator
         return new Menu(menuItemMap[role], _InputGetter, _RegexConstants);
     }
 
-    private string GetUserRole(int user_id)
+    private static string GetUserRole(int user_id)
     {
         // get user role from db
         string[] roles;
@@ -61,7 +61,7 @@ internal class MenuCreator : IMenuCreator
 
             IQueryable<string> query = context.User
             .Join(context.Role,
-                u => u.role_id,
+                u => u.roleId,
                 r => r.id,
                 (u, r) => new { User = u, Role = r })
             .Where(x => x.User.id == user_id)

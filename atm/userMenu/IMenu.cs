@@ -1,4 +1,4 @@
 ﻿public interface IMenu
 {
-    public void Run(int user_id);
+    public void Run(int userId);
 }

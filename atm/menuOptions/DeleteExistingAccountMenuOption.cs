@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-internal class DeleteExistingAccountMenuOption : IDeleteExistingAccountMenuOption
+internal sealed class DeleteExistingAccountMenuOption : IDeleteExistingAccountMenuOption
 {
     public string Name { get; } = "Delete Existing Account";
     private IInputGetter _InputGetter;

@@ -58,7 +58,7 @@ public class UserDAL: IUserDAL
     {
         using (Context context = new())
         {
-            return GetUser(UserID, context).status_id;
+            return GetUser(UserID, context).statusId;
         }
     }
 
@@ -148,7 +148,7 @@ public class UserDAL: IUserDAL
         }
     }
 
-    protected UserRepository GetUser(int userID, Context context)
+    protected static UserRepository GetUser(int userID, Context context)
     {
         UserRepository? user = context.User.SingleOrDefault(u => u.id == userID);
         if (user == null)

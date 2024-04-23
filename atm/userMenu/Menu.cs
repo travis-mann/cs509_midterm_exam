@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 
 public class Menu: IMenu
 {
@@ -16,10 +16,10 @@ public class Menu: IMenu
         ExitIndex = menuOptions.Length + 1;
     }
 
-    public void Run(int user_id)
+    public void Run(int userId)
     {
         bool runMenu = true;
-        while (runMenu) 
+        while (runMenu)
         {
             DisplayOptions();
             int selection = Convert.ToInt16(_InputGetter.GetInput(isValidSelection, "Enter selection: "));
@@ -30,7 +30,7 @@ public class Menu: IMenu
             }
             else
             {
-                _MenuOptions[selection - 1].Run(user_id);
+                _MenuOptions[selection - 1].Run(userId);
             }
         }
     }

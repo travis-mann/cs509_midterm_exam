@@ -1,11 +1,11 @@
 ﻿public class UserDALWithUpdate: UserDAL, IUserDALWithUpdate
 {
-    public int UpdateUserName(int UserID, string Name)
+    public int UpdateUserName(int UserID, string name)
     {
         using (Context context = new())
         {
             UserRepository user = GetUser(UserID, context);
-            user.name = Name;
+            user.name = name;
             context.SaveChanges();
             return user.id;
         }
@@ -16,7 +16,7 @@
         using (Context context = new())
         {
             UserRepository user = GetUser(UserID, context);
-            user.status_id = statusID;
+            user.statusId = statusID;
             context.SaveChanges();
             return user.id;
         }

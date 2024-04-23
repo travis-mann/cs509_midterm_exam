@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-internal class SearchForAccountMenuOption : ISearchForAccountMenuOption
+internal sealed class SearchForAccountMenuOption : ISearchForAccountMenuOption
 {
     public string Name { get; } = "Search for Account";
     private IInputGetter _InputGetter;

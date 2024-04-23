@@ -1,4 +1,4 @@
 ﻿public interface IMenuCreator
 {
-    public IMenu GetMenu(int user_id);
+    public IMenu GetMenu(int userId);
 }

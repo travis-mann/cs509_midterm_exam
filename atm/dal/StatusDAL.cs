@@ -1,4 +1,4 @@
-﻿internal class StatusDAL: IStatusDAL
+﻿internal sealed class StatusDAL: IStatusDAL
 {
     public int? GetStatusID(string status)
     {
