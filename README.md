@@ -10,16 +10,22 @@ Purpose: Midterm exam for CS509 S24 "Design of Software Systems"
 
 ## Final
 1. Make a System Design drawing
-- [ ] `TODO`
+
+![image](https://github.com/travis-mann/cs509_midterm_exam/assets/96485031/f6e13af5-7dcb-4377-8117-206e443695cd)
 
 2. Improve your Class Diagrams (object design)
 - [ ] `TODO`
 
 3. What software architecture are you using? e.g. Layered/How many layers? Repository? Something else?
-- [ ] `TODO`
 
-3. Refactor your code based on the system and object design.
-- [ ] `TODO`
+This design is a 4 layered architechture because there are the following 4 layers which each depend on the next one down and cannot talk to any layer except the one below:
+1. Program Loop: The simpliest layer, responsible for starting the program and transitioning between elements from the 2nd layer.
+2. User Interface Layer: Reponsible for managing interactions between the user and persistant data. All CRUD operations are intitiated here and sent to the next layer down via C# calls. This layer is operates independantly from the chosen data storage solution (AKA there is no SQL or Entity frameworks here)
+3. Data Access Layer: This layer communicates directly with the MySQL database using an entity framework. It is responsible for executing CRUD operations from C# calls at the User Interface Layer. Since every layer is separated by dependancy injection, a different storage solution could be swapped in without modifying any upper layers, as long as a new DAL was included that implemented the same interface.
+4. Database: Persistant data storage for this program, implemented with MySQL.
+
+5. Refactor your code based on the system and object design.
+Done!
 
 4. Setup and implement unit tests. Note, only test public/internal stuff. Also, setup codecovLinks to an external site. or equivalent. I expect to see 90% code coverage.
 - [ ] `TODO`
@@ -30,7 +36,7 @@ Purpose: Midterm exam for CS509 S24 "Design of Software Systems"
   - CONS: 
 
 - Docker
-  - PROS:
+  - PROS: 
   - CONS:
 
 - Plain old computer
@@ -41,13 +47,13 @@ Purpose: Midterm exam for CS509 S24 "Design of Software Systems"
 - [ ] EditorConfig 
 - [ ] A linter for formatting your code such as: StyleCopAnalyzers, dotnet format,...
 - [ ] I expect C# documentation of public stuff. Generate class documentation via doxygen, sandcastle, ... 
-- [ ] You can generate it as a pdf or setup "read the docs"
+  - [ ] You can generate it as a pdf or setup "read the docs"
 - [ ] Setup a build system such as CAKE, ...
-- [ ] At the very least you should just use scripts (PowerShell or bash)
+  - [ ] At the very least you should just use scripts (PowerShell or bash)
 - [ ] Setup a CI/CD server such as appveyor, travis-ci,...
 - [ ] Everytime someone pushes code to github the CI/CD should
-- [ ] Run your build script which includes the following (and will fail if things go wrong by notifying the user) 
-- [ ] Run StyleCopAnalyzers (or equivalent)
-- [ ] Build the code (release and debug mode)
-- [ ] Build the documentation (and publish them somewhere such as "read the docs" or a folder on google drive etc.)
-- [ ] Run the unit test(s)
+  - [ ] Run your build script which includes the following (and will fail if things go wrong by notifying the user) 
+  - [ ] Run StyleCopAnalyzers (or equivalent)
+  - [ ] Build the code (release and debug mode)
+  - [ ] Build the documentation (and publish them somewhere such as "read the docs" or a folder on google drive etc.)
+  - [ ] Run the unit test(s)
