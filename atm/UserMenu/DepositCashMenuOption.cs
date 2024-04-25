@@ -1,4 +1,4 @@
-namespace Atm.MenuOptions;
+namespace Atm.UserMenu;
 using System.Text.RegularExpressions;
 using Atm.Dal;
 using Atm.Common;
@@ -28,5 +28,5 @@ internal sealed class DepositCashMenuOption : IMenuOption
 
     private static string GetTodaysDateString() => DateTime.Now.ToString("MM/dd/yyyy", new CultureInfo("en-US"));
 
-    private static bool IsValidInput(string input, IInputGetter inputGetter) => new Regex(inputGetter.RegexConstants.Balance).Match(input).Success;
+    internal static bool IsValidInput(string input, IInputGetter inputGetter) => new Regex(inputGetter.RegexConstants.Balance).Match(input).Success;
 }

@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using Atm.Dal;
 using Atm.Common;
-using Atm.MenuOptions;
 
 public class Menu : IMenu
 {
@@ -17,9 +16,8 @@ public class Menu : IMenu
         this.inputGetter = inputGetter;
     }
 
-    public void Run(int accountId)
+    public void Run(int accountId, IMenuOption[] menuOptions, bool clearConsole = true)
     {
-        var menuOptions = this.GetMenuOptions(accountId);
         var exitIndex = menuOptions.Length + 1;
         var runMenu = true;
         while (runMenu)
@@ -28,7 +26,10 @@ public class Menu : IMenu
             int selection = Convert.ToInt16(this.inputGetter.GetInput((input) => IsValidSelection(input, exitIndex, this.inputGetter), "Enter selection: "), new CultureInfo("en-US"));
             if (selection == exitIndex)
             {
-                Console.Clear();
+                if (clearConsole)
+                {
+                    Console.Clear();  // doesnt work with unit tests
+                }
                 runMenu = false;
             }
             else
@@ -38,29 +39,7 @@ public class Menu : IMenu
         }
     }
 
-    private IMenuOption[] GetMenuOptions(int accountId)
-    {
-        var role = this.accountDAL.GetRole(accountId);
-        if (role == "admin")
-        {
-            return new IMenuOption[] {
-                new CreateNewAccountMenuOption(),
-                new DeleteExistingAccountMenuOption(),
-                new UpdateAccountInformationMenuOption(),
-                new SearchForAccountMenuOption()
-            };
-        }
-        else
-        {
-            return new IMenuOption[] {
-                new WithdrawCashMenuOption(),
-                new DisplayBalanceMenuOption(),
-                new DepositCashMenuOption()
-            };
-        }
-    }
-
-    private static bool IsValidSelection(string input, int exitIndex, IInputGetter inputGetter)
+    internal static bool IsValidSelection(string input, int exitIndex, IInputGetter inputGetter)
     {
         if (!new Regex(inputGetter.RegexConstants.MenuOptionSelection).Match(input).Success)
         {

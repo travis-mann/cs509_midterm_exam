@@ -4,33 +4,32 @@ public class InputGetter : IInputGetter
 {
     public IRegexConstants RegexConstants { get; } = new RegexConstants();
 
+
     public string GetInput(Func<string, bool> isValid, string fieldName, string? errorMessage = null)
     {
-        // initial prompt
         Console.Write(fieldName);
-        var input = "";
+        string? input = null;
 
-        var inputValid = false;
-        while (!inputValid)
+        while (input is null)
         {
-            // get input
-            input = Console.ReadLine() ?? "";
-
-            if (isValid(input))  // valid login string
-            {
-                inputValid = true;
-            }
-            // Invalid login string
-            else if (errorMessage != null)
-            {
-                Console.Write(errorMessage);
-            }
-            else
-            {
-                Console.Write($"ERROR: Invalid value, Try again: ");
-            }
+            input = GetInputSingleLoop(isValid, errorMessage);
         }
 
         return input;
+    }
+
+    internal static string? GetInputSingleLoop(Func<string, bool> isValid, string? errorMessage = "ERROR: Invalid value, Try again: ")
+    {
+        var input = Console.ReadLine() ?? "";
+        if (isValid(input))
+        {
+            return input;
+        }
+        else
+        {
+            Console.Write(errorMessage);
+        }
+
+        return null;
     }
 }

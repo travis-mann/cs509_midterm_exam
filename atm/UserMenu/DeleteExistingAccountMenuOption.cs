@@ -1,4 +1,4 @@
-namespace Atm.MenuOptions;
+namespace Atm.UserMenu;
 using System.Text.RegularExpressions;
 using Atm.Dal;
 using Atm.Common;

@@ -1,4 +1,4 @@
-namespace Atm.MenuOptions;
+namespace Atm.UserMenu;
 using Atm.Dal;
 using Atm.Common;
 

@@ -1,4 +1,4 @@
-﻿public interface ILoginMenu
+public interface ILoginMenu
 {
-    public int Login();
+    public (int, bool) Login();
 }

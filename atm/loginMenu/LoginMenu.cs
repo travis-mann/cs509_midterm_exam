@@ -15,7 +15,7 @@ public class LoginMenu : ILoginMenu
         this.accountDAL = accountDAL;
     }
 
-    public int Login()
+    public (int, bool) Login()
     {
         int? accountId = null;
         while (accountId == null)
@@ -23,10 +23,10 @@ public class LoginMenu : ILoginMenu
             accountId = LoginAttemptHandler(this.inputGetter, this.accountDAL);
         }
         Console.WriteLine("login success!");
-        return (int)accountId;
+        return ((int)accountId, this.accountDAL.IsAdmin((int)accountId));
     }
 
-    private static int? LoginAttemptHandler(IInputGetter inputGetter, IAccountDAL accountDAL)
+    internal static int? LoginAttemptHandler(IInputGetter inputGetter, IAccountDAL accountDAL)
     {
         var login = inputGetter.GetInput(input => new Regex(inputGetter.RegexConstants.Login).Match(input).Success, "Enter login: ");
         if (!accountDAL.IsValidLogin(login))

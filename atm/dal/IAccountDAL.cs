@@ -8,6 +8,7 @@ public interface IAccountDAL
     public bool IsValidLogin(string login);
     public bool IsValidPin(string login, int pin);
     public bool IsValidAccount(int accountId);
+    public bool IsAdmin(int accountId);
 
     public int GetBalance(int accountId);
     public string GetUserName(int accountId);
