@@ -25,7 +25,7 @@ public class LoginMenuTest
         var isAdmin = new Fixture().Create<bool>();
         MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { login, pin });
         this.mockAccountDAL.Setup(a => a.IsValidLogin(login)).Returns(true);
-        this.mockAccountDAL.Setup(a => a.IsValidPin(login, Convert.ToInt32(pin))).Returns(true);
+        this.mockAccountDAL.Setup(a => a.IsValidPin(login, Convert.ToInt32(pin, new CultureInfo("en-US")))).Returns(true);
         this.mockAccountDAL.Setup(a => a.GetAccountIdFromLogin(login)).Returns(this.accountId);
         this.mockAccountDAL.Setup(a => a.IsAdmin(this.accountId)).Returns(isAdmin);
 

@@ -1,4 +1,6 @@
 namespace Atm.Test.UserMenu;
+
+using System.Globalization;
 using Atm.Common;
 
 using Atm.Dal;
@@ -40,7 +42,7 @@ public class MenuTest
     public void IsValidSelectionReturnsFalseIfInputGreaterThanExitIndex()
     {
         var exitIndex = new Fixture().Create<int>();
-        var selection = (exitIndex + new Fixture().Create<int>()).ToString();
+        var selection = (exitIndex + new Fixture().Create<int>()).ToString(new CultureInfo("en-US"));
         Menu.IsValidSelection(selection, exitIndex, this.mockInputGetter.Object).Should().BeFalse();
     }
 
@@ -48,7 +50,7 @@ public class MenuTest
     public void IsValidSelectionReturnsFalseIfInputLessThan0()
     {
         var exitIndex = new Fixture().Create<int>();
-        var selection = (new Fixture().Create<int>() * -1).ToString();
+        var selection = (new Fixture().Create<int>() * -1).ToString(new CultureInfo("en-US"));
         Menu.IsValidSelection(selection, exitIndex, this.mockInputGetter.Object).Should().BeFalse();
     }
 
@@ -56,7 +58,7 @@ public class MenuTest
     public void IsValidSelectionReturnsTrueIfInputGreaterThan0LessThanExit()
     {
         var exitIndex = FixtureHelper.CreateIntInRange(2, 100);
-        var selection = FixtureHelper.CreateIntInRange(1, exitIndex).ToString();
+        var selection = FixtureHelper.CreateIntInRange(1, exitIndex).ToString(new CultureInfo("en-US"));
         Menu.IsValidSelection(selection, exitIndex, this.mockInputGetter.Object).Should().BeTrue();
     }
 }

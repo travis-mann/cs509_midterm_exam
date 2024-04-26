@@ -1,5 +1,6 @@
 namespace Atm.Test.UserMenu;
 
+using System.Globalization;
 using Atm.Common;
 using Atm.Dal;
 using Atm.UserMenu;
@@ -21,7 +22,7 @@ public class SearchForAccountMenuOptionTest
     public void RunShouldGetUserNameOnValidAccountId()
     {
         this.mockAccountDAL.Setup(a => a.IsValidAccount(It.IsAny<int>())).Returns(true);
-        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { this.accountId.ToString() });
+        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { this.accountId.ToString(new CultureInfo("en-US")) });
 
         new SearchForAccountMenuOption().Run(this.accountId, this.mockInputGetter.Object, this.mockAccountDAL.Object);
         this.mockAccountDAL.Verify(a => a.IsValidAccount(this.accountId), Times.Once);
@@ -32,7 +33,7 @@ public class SearchForAccountMenuOptionTest
     public void RunShouldNotGetUserNameOnInvalidAccountId()
     {
         this.mockAccountDAL.Setup(a => a.IsValidAccount(It.IsAny<int>())).Returns(false);
-        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { this.accountId.ToString() });
+        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { this.accountId.ToString(new CultureInfo("en-US")) });
 
         new SearchForAccountMenuOption().Run(this.accountId, this.mockInputGetter.Object, this.mockAccountDAL.Object);
         this.mockAccountDAL.Verify(a => a.IsValidAccount(this.accountId), Times.Once);

@@ -1,6 +1,7 @@
 namespace Atm.Test.UserMenu;
 
 using System;
+using System.Globalization;
 using Atm.Common;
 using Atm.Dal;
 using Atm.UserMenu;
@@ -29,7 +30,7 @@ public class UpdateAccountInformationMenuOptionTest
         var pin = FixtureHelper.CreatePinInput();
 
         this.mockAccountDAL.Setup(a => a.IsValidAccount(this.custAccountId)).Returns(true);
-        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { this.custAccountId.ToString(), name, status, login, pin });
+        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { this.custAccountId.ToString(new CultureInfo("en-US")), name, status, login, pin });
 
         new UpdateAccountInformationMenuOption().Run(this.accountId, this.mockInputGetter.Object, this.mockAccountDAL.Object);
         this.mockAccountDAL.Verify(a => a.GetUserName(this.custAccountId), Times.Once);
@@ -39,14 +40,14 @@ public class UpdateAccountInformationMenuOptionTest
         this.mockAccountDAL.Verify(a => a.GetUserLogin(this.custAccountId), Times.Once);
         this.mockAccountDAL.Verify(a => a.UpdateUserLogin(this.custAccountId, login), Times.Once);
         this.mockAccountDAL.Verify(a => a.GetPin(this.custAccountId), Times.Never);
-        this.mockAccountDAL.Verify(a => a.UpdateUserPin(this.custAccountId, Convert.ToInt32(pin)), Times.Once);
+        this.mockAccountDAL.Verify(a => a.UpdateUserPin(this.custAccountId, Convert.ToInt32(pin, new CultureInfo("en-US"))), Times.Once);
     }
 
     [Fact]
     public void RunShouldNotUpdateAccountDetailsOnBlankInputs()
     {
         this.mockAccountDAL.Setup(a => a.IsValidAccount(this.custAccountId)).Returns(true);
-        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { this.custAccountId.ToString(), "", "", "", "" });
+        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { this.custAccountId.ToString(new CultureInfo("en-US")), "", "", "", "" });
 
         new UpdateAccountInformationMenuOption().Run(this.accountId, this.mockInputGetter.Object, this.mockAccountDAL.Object);
         this.mockAccountDAL.Verify(a => a.GetUserName(this.custAccountId), Times.Once);
@@ -63,7 +64,7 @@ public class UpdateAccountInformationMenuOptionTest
     public void RunShouldNotGetOrUpdateAccountDetailsOnInvalidAccountId()
     {
         this.mockAccountDAL.Setup(a => a.IsValidAccount(this.custAccountId)).Returns(false);
-        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { this.custAccountId.ToString() });
+        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { this.custAccountId.ToString(new CultureInfo("en-US")) });
 
         new UpdateAccountInformationMenuOption().Run(this.accountId, this.mockInputGetter.Object, this.mockAccountDAL.Object);
         this.mockAccountDAL.Verify(a => a.GetUserName(It.IsAny<int>()), Times.Never);

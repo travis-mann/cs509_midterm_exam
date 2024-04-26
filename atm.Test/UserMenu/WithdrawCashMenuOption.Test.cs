@@ -1,5 +1,6 @@
 namespace Atm.Test.UserMenu;
 
+using System.Globalization;
 using Atm.Common;
 using Atm.Dal;
 using Atm.UserMenu;
@@ -25,7 +26,7 @@ public class WithdrawCashMenuOptionTest
 
         this.mockInputGetter.Setup(i => i.RegexConstants.Balance).Returns(new RegexConstants().Balance);
         this.mockAccountDAL.Setup(a => a.GetBalance(this.accountId)).Returns(balance);
-        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { amountToWithdraw.ToString() });
+        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { amountToWithdraw.ToString(new CultureInfo("en-US")) });
 
         new WithdrawCashMenuOption().Run(this.accountId, this.mockInputGetter.Object, this.mockAccountDAL.Object);
         this.mockAccountDAL.Verify(a => a.GetBalance(this.accountId), Times.Exactly(2));
@@ -40,7 +41,7 @@ public class WithdrawCashMenuOptionTest
 
         this.mockInputGetter.Setup(i => i.RegexConstants.Balance).Returns(new RegexConstants().Balance);
         this.mockAccountDAL.Setup(a => a.GetBalance(this.accountId)).Returns(balance);
-        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { amountToWithdraw.ToString() });
+        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { amountToWithdraw.ToString(new CultureInfo("en-US")) });
 
         new WithdrawCashMenuOption().Run(this.accountId, this.mockInputGetter.Object, this.mockAccountDAL.Object);
         this.mockAccountDAL.Verify(a => a.GetBalance(this.accountId), Times.Exactly(2));
