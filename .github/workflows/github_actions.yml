@@ -34,24 +34,10 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Create Documentation Folder
-        run: mkdir "./docs"
-        
-      - name: Build Documentation
-        uses: mattnotmitt/doxygen-action@v1.9.5
+      - name: Prepare Documentation
+        run: |
+          mkdir "./wiki"
+          mv "./atm/obj/Debug/net6.0/*.md" "./wiki"
 
-      # USE BELOW TO PUSH DOCUMENTATION TO GOOGLE DRIVE. REQUIRES A SERVICE ACCOUNT.
-      
-      # - name: Archive Documentation
-      #   run: sudo apt-get update
-      #        sudo apt-get install zip
-      #        zip -r documentation.zip ./docs
-
-      # - name: Upload Documentation
-      #   uses: adityak74/google-drive-upload-git-action@main
-      #   with: 
-      #     credentials: ${{ secrets.credentials }}
-      #     filename: "archive.zip"
-      #     folderId: ${{ secrets.folderId }}
-      #     name: "documentation.zip"
-      #     overwrite: "true"
+      - name: Publish Documentation
+        uses: Andrew-Chen-Wang/github-wiki-action@v4
