@@ -18,10 +18,10 @@ jobs:
       
       - name: Style Check
         id: styleCheck
-        run: echo "STYLEOUTPUTLEN=$(dotnet format atm)" >> $GITHUB_OUTPUT
+        run: echo "STYLEOUTPUTLEN=$(dotnet format atm)" >> $GITHUB_ENV
 
       - name: Check Style Check Output
-        run: echo ${{ steps.styleCheck.outputs.* }}
+        run: echo ${{ env.STYLEOUTPUTLEN }}
         # if: ${{ env.STYLEOUTPUTLEN > 0 }} 
         # run: exit 1
         
