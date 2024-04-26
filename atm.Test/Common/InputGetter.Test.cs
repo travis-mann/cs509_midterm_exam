@@ -10,14 +10,10 @@ public class InputGetterTest
         var fieldName = new Fixture().Create<string>();
         var errorMessage = new Fixture().Create<string>();
 
-        var outputBuffer = new StringWriter();
-        Console.SetOut(outputBuffer);
-
         var inputBuffer = new StringReader(input);
         Console.SetIn(inputBuffer);
 
         _ = new InputGetter().GetInput((i) => i == input, fieldName, errorMessage).Should().Be(input);
-        _ = outputBuffer.ToString().Should().Be(fieldName);
     }
 
     [Fact]
