@@ -20,7 +20,7 @@ jobs:
         run: echo "STYLEOUTPUTLEN=$(dotnet format atm | wc -c)" >> $GITHUB_ENV
 
       - name: Check Style Check Output
-        if: ${{ env.STYLEOUTPUTLEN }} > 0
+        if: ${{ env.STYLEOUTPUTLEN > 0 }} 
         run: exit 1
         
       - name: Build and Static Code Analysis
