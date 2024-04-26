@@ -1,0 +1,57 @@
+name: GitHub Actions CI/CD
+
+on: 
+  push:
+    branches: '**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: .NET Setup
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0"
+      - name: Restore
+        run: dotnet restore
+        
+      - name: Style Check
+        run: dotnet format
+        
+      - name: Debug Build and Static Code Analysis
+        run: dotnet build --no-restore /p:RunCodeAnalysis=true --configuration Debug
+        
+      - name: Release Build and Static Code Analysis
+        run: dotnet build --no-restore /p:RunCodeAnalysis=true --configuration Release
+
+      - name: Test
+        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover  --no-build
+
+      - name: Upload Coverage Reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Create Documentation Folder
+        run: mkdir "./docs"
+        
+      - name: Build Documentation
+        uses: mattnotmitt/doxygen-action@v1.9.5
+
+      # USE BELOW TO PUSH DOCUMENTATION TO GOOGLE DRIVE. REQUIRES A SERVICE ACCOUNT.
+      
+      # - name: Archive Documentation
+      #   run: sudo apt-get update
+      #        sudo apt-get install zip
+      #        zip -r documentation.zip ./docs
+
+      # - name: Upload Documentation
+      #   uses: adityak74/google-drive-upload-git-action@main
+      #   with: 
+      #     credentials: ${{ secrets.credentials }}
+      #     filename: "archive.zip"
+      #     folderId: ${{ secrets.folderId }}
+      #     name: "documentation.zip"
+      #     overwrite: "true"
