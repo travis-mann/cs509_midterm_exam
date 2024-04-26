@@ -16,27 +16,26 @@ jobs:
         with:
           dotnet-version: "6.0"
       
-      # - name: Style Check
-      #   run: dotnet format --check
+      - name: Style Check
+        run: dotnet format --check
         
       - name: Debug Build and Static Code Analysis
         run: dotnet build /p:RunCodeAnalysis=true --configuration Debug
         
-      # - name: Release Build and Static Code Analysis
-      #   run: dotnet build /p:RunCodeAnalysis=true --configuration Release
+      - name: Release Build and Static Code Analysis
+        run: dotnet build /p:RunCodeAnalysis=true --configuration Release
 
-      # - name: Test
-      #   run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover  --no-build
+      - name: Test
+        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover  --no-build
 
-      # - name: Upload Coverage Reports to Codecov
-      #   uses: codecov/codecov-action@v4.0.1
-      #   with:
-      #     token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload Coverage Reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Prepare Documentation
         run: |
           mkdir "./wiki"
-          ls
           mv ./atm/obj/Debug/net6.0/*.md ./wiki
 
       - name: Publish Documentation
