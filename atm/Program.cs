@@ -1,8 +1,8 @@
 namespace Atm;
 
 using System.Reflection;
-using Atm.UserMenu;
 using Atm.LoginMenu;
+using Atm.UserMenu;
 using Ninject;  // dependancy injection
 
 internal class ATM

@@ -4,17 +4,29 @@ using System.Text.RegularExpressions;
 using Atm.Common;
 using Atm.Dal;
 
+/// <summary>
+/// Manages user login for the ATM
+/// </summary>
 public class LoginMenu : ILoginMenu
 {
     private readonly IInputGetter inputGetter;
     private readonly IAccountDAL accountDAL;
 
+    /// <summary>
+    /// Constructor for LoginMenu class
+    /// </summary>
+    /// <param name="inputGetter">Class to manage getting user input</param>
+    /// <param name="accountDAL">Class to manage accessing data from persistant storge layer</param>
     public LoginMenu(IInputGetter inputGetter, IAccountDAL accountDAL)
     {
         this.inputGetter = inputGetter;
         this.accountDAL = accountDAL;
     }
 
+    /// <summary>
+    /// Runs login process for the ATM
+    /// </summary>
+    /// <returns>accountId and isAdmin flag</returns>
     public (int, bool) Login()
     {
         int? accountId = null;

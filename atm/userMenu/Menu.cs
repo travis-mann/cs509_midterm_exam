@@ -5,17 +5,31 @@ using System.Text.RegularExpressions;
 using Atm.Common;
 using Atm.Dal;
 
+/// <summary>
+/// Manages menu with relevent options for the user based on role
+/// </summary>
 public class Menu : IMenu
 {
     private readonly IInputGetter inputGetter;
     private readonly IAccountDAL accountDAL;
 
+    /// <summary>
+    /// Constructor for menu object
+    /// </summary>
+    /// <param name="inputGetter">Class to manage getting user input</param>
+    /// <param name="accountDAL">Class to manage accessing data from persistant storge layer</param>
     public Menu(IInputGetter inputGetter, IAccountDAL accountDAL)
     {
         this.accountDAL = accountDAL;
         this.inputGetter = inputGetter;
     }
 
+    /// <summary>
+    /// Runs menu for user with injected menu options
+    /// </summary>
+    /// <param name="accountId">accountId associated with current user</param>
+    /// <param name="menuOptions">options used to populate the menu</param>
+    /// <param name="clearConsole">optional flag to clear console output on menu exit</param>
     public void Run(int accountId, IMenuOption[] menuOptions, bool clearConsole = true)
     {
         var exitIndex = menuOptions.Length + 1;

@@ -26,8 +26,22 @@ public class AccountDAL : IAccountDAL
 {
     private readonly IContextFactory contextFactory;
 
+    /// <summary>
+    /// Constructor for AccountDal class
+    /// </summary>
+    /// <param name="contextFactory">class to create database contexts</param>
     public AccountDAL(IContextFactory contextFactory) => this.contextFactory = contextFactory;
 
+    /// <summary>
+    /// Creates a new account
+    /// </summary>
+    /// <param name="login">login for new account</param>
+    /// <param name="pin">pin for new account</param>
+    /// <param name="name">name for new account</param>
+    /// <param name="role">role for new account</param>
+    /// <param name="status">status for new account</param>
+    /// <param name="balance">starting balance for new account</param>
+    /// <returns></returns>
     public int CreateAccount(string login, int pin, string name, string role, string status, int balance)
     {
         using var context = this.contextFactory.CreateContext();
@@ -37,26 +51,11 @@ public class AccountDAL : IAccountDAL
         return account.Id;
     }
 
-    public int UpdateBalance(int amountToAdd, int accountId)
-    {
-        using var context = this.contextFactory.CreateContext();
-        var account = GetAccount(accountId, context);
-        if (account.Balance + amountToAdd < 0)
-        {
-            throw new InvalidBalanceUpdateException(account.Balance, amountToAdd, accountId);
-        }
-        account.Balance += amountToAdd;
-        _ = context.SaveChanges();
-        return account.Balance;
-    }
-
-    public int GetBalance(int accountId)
-    {
-        using var context = this.contextFactory.CreateContext();
-        var account = GetAccount(accountId, context);
-        return account.Balance;
-    }
-
+    /// <summary>
+    /// Deletes an existing account
+    /// </summary>
+    /// <param name="accountId">Id associated with account to delete</param>
+    /// <returns></returns>
     public int DeleteAccount(int accountId)
     {
         using var context = this.contextFactory.CreateContext();
@@ -66,8 +65,31 @@ public class AccountDAL : IAccountDAL
         return account.Id;
     }
 
+    /// <summary>
+    /// Checks if a given login exists
+    /// </summary>
+    /// <param name="login">login to check</param>
+    /// <returns></returns>
     public bool IsValidLogin(string login) => this.GetAccountIdFromLogin(login) != 0;
 
+    /// <summary>
+    /// Checks if a given pin is correct for a given login
+    /// </summary>
+    /// <param name="login">login to check against</param>
+    /// <param name="pin">pin to check</param>
+    /// <returns></returns>
+    public bool IsValidPin(string login, int pin)
+    {
+        using var context = this.contextFactory.CreateContext();
+        var accountId = this.GetAccountIdFromLogin(login);
+        return accountId != 0 && this.GetPin(accountId) == pin;
+    }
+
+    /// <summary>
+    /// Checks if the given accountId exists
+    /// </summary>
+    /// <param name="accountId">account id to check</param>
+    /// <returns></returns>
     public bool IsValidAccount(int accountId)
     {
         using var context = this.contextFactory.CreateContext();
@@ -83,51 +105,116 @@ public class AccountDAL : IAccountDAL
 
     }
 
-    public bool IsValidPin(string login, int pin)
-    {
-        using var context = this.contextFactory.CreateContext();
-        var accountId = this.GetAccountIdFromLogin(login);
-        return accountId != 0 && this.GetPin(accountId) == pin;
-    }
-
+    /// <summary>
+    /// Checks if the account associated with the given account id is an admin account
+    /// </summary>
+    /// <param name="accountId">account id to check</param>
+    /// <returns></returns>
     public bool IsAdmin(int accountId) => this.GetRole(accountId) == "admin";
 
-    public int GetAccountIdFromLogin(string login)
+    /// <summary>
+    /// Returns the current balance
+    /// </summary>
+    /// <param name="accountId">account id associated with account to retrieve balance from</param>
+    /// <returns></returns>
+    public int GetBalance(int accountId)
     {
         using var context = this.contextFactory.CreateContext();
-        return context.Account.Where(a => a.Login == login).Select(a => a.Id).SingleOrDefault();
+        var account = GetAccount(accountId, context);
+        return account.Balance;
     }
 
-    public string GetUserLogin(int accountId)
-    {
-        using var context = this.contextFactory.CreateContext();
-        return GetAccount(accountId, context).Login;
-    }
-
+    /// <summary>
+    /// Get name associated with an account
+    /// </summary>
+    /// <param name="accountId">account id associated with account to retrieve name from</param>
+    /// <returns></returns>
     public string GetUserName(int accountId)
     {
         using var context = this.contextFactory.CreateContext();
         return GetAccount(accountId, context).Name;
     }
 
+    /// <summary>
+    /// Get login associated with an account
+    /// </summary>
+    /// <param name="accountId">account id associated with account to retrieve login from</param>
+    /// <returns></returns>
+    public string GetUserLogin(int accountId)
+    {
+        using var context = this.contextFactory.CreateContext();
+        return GetAccount(accountId, context).Login;
+    }
+
+    /// <summary>
+    /// Get status associated with an account
+    /// </summary>
+    /// <param name="accountId">account id associated with account to retrieve status from</param>
+    /// <returns></returns>
     public string GetStatus(int accountId)
     {
         using var context = this.contextFactory.CreateContext();
         return GetAccount(accountId, context).Status;
     }
 
+    /// <summary>
+    /// Get role associated with an account
+    /// </summary>
+    /// <param name="accountId">account id associated with account to retrieve role from</param>
+    /// <returns></returns>
     public string GetRole(int accountId)
     {
         using var context = this.contextFactory.CreateContext();
         return GetAccount(accountId, context).Role;
     }
 
+    /// <summary>
+    /// Get pin associated with an account
+    /// </summary>
+    /// <param name="accountId">account id associated with account to retrieve pin from</param>
+    /// <returns></returns>
     public int GetPin(int accountId)
     {
         using var context = this.contextFactory.CreateContext();
         return GetAccount(accountId, context).Pin;
     }
 
+    /// <summary>
+    /// Get account id associated with given login
+    /// </summary>
+    /// <param name="login">login for account to get id from</param>
+    /// <returns></returns>
+    public int GetAccountIdFromLogin(string login)
+    {
+        using var context = this.contextFactory.CreateContext();
+        return context.Account.Where(a => a.Login == login).Select(a => a.Id).SingleOrDefault();
+    }
+
+    /// <summary>
+    /// Update balance for a given account
+    /// </summary>
+    /// <param name="amountToAdd">amount to add to account balance</param>
+    /// <param name="accountId">id associated with account to update</param>
+    /// <returns></returns>
+    public int UpdateBalance(int amountToAdd, int accountId)
+    {
+        using var context = this.contextFactory.CreateContext();
+        var account = GetAccount(accountId, context);
+        if (account.Balance + amountToAdd < 0)
+        {
+            throw new InvalidBalanceUpdateException(account.Balance, amountToAdd, accountId);
+        }
+        account.Balance += amountToAdd;
+        _ = context.SaveChanges();
+        return account.Balance;
+    }
+
+    /// <summary>
+    /// Update name for a given account
+    /// </summary>
+    /// <param name="accountId">id associated with account to update</param>
+    /// <param name="name">new name</param>
+    /// <returns></returns>
     public int UpdateUserName(int accountId, string name)
     {
         using var context = this.contextFactory.CreateContext();
@@ -137,6 +224,12 @@ public class AccountDAL : IAccountDAL
         return account.Id;
     }
 
+    /// <summary>
+    /// Update status for a given account
+    /// </summary>
+    /// <param name="accountId">id associated with account to update</param>
+    /// <param name="status">new status</param>
+    /// <returns></returns>
     public int UpdateUserStatus(int accountId, string status)
     {
         using var context = this.contextFactory.CreateContext();
@@ -146,6 +239,12 @@ public class AccountDAL : IAccountDAL
         return account.Id;
     }
 
+    /// <summary>
+    /// Update login for a given account
+    /// </summary>
+    /// <param name="accountId">id associated with account to update</param>
+    /// <param name="login">new login</param>
+    /// <returns></returns>
     public int UpdateUserLogin(int accountId, string login)
     {
         using var context = this.contextFactory.CreateContext();
@@ -155,6 +254,12 @@ public class AccountDAL : IAccountDAL
         return account.Id;
     }
 
+    /// <summary>
+    /// Update pin for a given account
+    /// </summary>
+    /// <param name="accountId">id associated with account to update</param>
+    /// <param name="pin">new pin</param>
+    /// <returns></returns>
     public int UpdateUserPin(int accountId, int pin)
     {
         using var context = this.contextFactory.CreateContext();
