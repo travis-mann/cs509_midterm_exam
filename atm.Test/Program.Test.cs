@@ -1,6 +1,7 @@
 namespace Atm.Test;
 using Atm;
 using Atm.UserMenu;
+using Atm.LoginMenu;
 
 public class ProgramTest
 {
