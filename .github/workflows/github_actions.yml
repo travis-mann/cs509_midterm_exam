@@ -36,6 +36,7 @@ jobs:
 
       - name: Prepare Documentation
         run: |
+          pwd
           mkdir "./wiki"
           mv "./atm/obj/Debug/net6.0/*.md" "./wiki"
 
