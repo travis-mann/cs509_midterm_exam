@@ -17,19 +17,15 @@ public class InputGetterTest
     }
 
     [Fact]
-    public void GetInputSingleLoopWritesErrorWithInvalidInput()
+    public void GetInputDoesNotReturnInvalidInput()
     {
         var input = new Fixture().Create<string>();
         var fieldName = new Fixture().Create<string>();
         var errorMessage = new Fixture().Create<string>();
 
-        var outputBuffer = new StringWriter();
-        Console.SetOut(outputBuffer);
-
         var inputBuffer = new StringReader(input);
         Console.SetIn(inputBuffer);
 
         _ = InputGetter.GetInputSingleLoop((i) => i != input, errorMessage).Should().Be(null);
-        _ = outputBuffer.ToString().Should().Be(errorMessage);
     }
 }

@@ -1,8 +1,8 @@
 namespace Atm.UserMenu;
-using System.Text.RegularExpressions;
-using Atm.Dal;
-using Atm.Common;
 using System.Globalization;
+using System.Text.RegularExpressions;
+using Atm.Common;
+using Atm.Dal;
 
 internal sealed class CreateNewAccountMenuOption : IMenuOption
 {

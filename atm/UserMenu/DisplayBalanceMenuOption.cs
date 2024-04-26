@@ -1,7 +1,7 @@
 namespace Atm.UserMenu;
-using Atm.Dal;
-using Atm.Common;
 using System.Globalization;
+using Atm.Common;
+using Atm.Dal;
 
 internal sealed class DisplayBalanceMenuOption : IMenuOption
 {

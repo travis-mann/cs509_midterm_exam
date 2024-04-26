@@ -3,7 +3,7 @@ using System.Globalization;
 
 internal class FixtureHelper
 {
-    public static int CreateIntInRange(int min, int max) => new Fixture().Create<int>() % (max - min + 1) + min;
+    public static int CreateIntInRange(int min, int max) => (new Fixture().Create<int>() % (max - min + 1)) + min;
 
     public static string CreatePinInput() => CreateIntInRange(10000, 99999).ToString(new CultureInfo("en-US"));
 
@@ -33,7 +33,7 @@ internal class FixtureHelper
         }
     }
 
-    public static string CreateNameInput() => new string(new Fixture().Create<string>().Where(char.IsLetter).ToArray());
+    public static string CreateNameInput() => new(new Fixture().Create<string>().Where(char.IsLetter).ToArray());
 
     public static string CreateLoginInput()
     {
@@ -42,4 +42,4 @@ internal class FixtureHelper
         var randomStringNumbers = new Fixture().Create<string>().Where(char.IsLetter).ToArray();
         return new string(randomStringLetters.Concat(randomStringNumbers).ToArray());
     }
-} 
+}

@@ -63,7 +63,7 @@ public class UpdateAccountInformationMenuOptionTest
     public void RunShouldNotGetOrUpdateAccountDetailsOnInvalidAccountId()
     {
         this.mockAccountDAL.Setup(a => a.IsValidAccount(this.custAccountId)).Returns(false);
-        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { custAccountId.ToString() });
+        MockHelper.SetupInputSequence(this.mockInputGetter, new string[] { this.custAccountId.ToString() });
 
         new UpdateAccountInformationMenuOption().Run(this.accountId, this.mockInputGetter.Object, this.mockAccountDAL.Object);
         this.mockAccountDAL.Verify(a => a.GetUserName(It.IsAny<int>()), Times.Never);

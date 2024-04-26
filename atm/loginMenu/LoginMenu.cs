@@ -1,8 +1,8 @@
 namespace Atm.LoginMenu;
-using Atm.Dal;
-using Atm.Common;
-using System.Text.RegularExpressions;
 using System.Globalization;
+using System.Text.RegularExpressions;
+using Atm.Common;
+using Atm.Dal;
 
 public class LoginMenu : ILoginMenu
 {

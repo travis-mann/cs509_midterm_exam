@@ -1,9 +1,9 @@
 namespace Atm.Test.UserMenu;
 
 using System.Globalization;
-using Atm.UserMenu;
 using Atm.Common;
 using Atm.Dal;
+using Atm.UserMenu;
 
 public class DepositCashMenuOptionTest
 {

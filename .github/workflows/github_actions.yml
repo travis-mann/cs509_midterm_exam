@@ -17,7 +17,7 @@ jobs:
           dotnet-version: "6.0"
       
       - name: Style Check
-        run: if [[ $(echo "" | wc -c) -gt 1 ]]; then exit 1; fi
+        run: if [[ $(dotnet format | wc -c) -gt 1 ]]; then exit 1; fi
         
       - name: Build and Static Code Analysis
         run: |

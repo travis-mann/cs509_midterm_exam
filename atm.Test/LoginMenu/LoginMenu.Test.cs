@@ -1,8 +1,8 @@
 namespace Atm.Test.LoginMenu;
-using Atm.LoginMenu;
+using System.Globalization;
 using Atm.Common;
 using Atm.Dal;
-using System.Globalization;
+using Atm.LoginMenu;
 
 public class LoginMenuTest
 {
@@ -45,7 +45,7 @@ public class LoginMenuTest
     public void LoginAttemptHandlerReturnsNullOnInvalidPin()
     {
         var login = new Fixture().Create<string>();
-        var pin = (new Fixture().Create<int>() % (99999 - 10000 + 1) + 10000).ToString(new CultureInfo("en-US"));
+        var pin = ((new Fixture().Create<int>() % (99999 - 10000 + 1)) + 10000).ToString(new CultureInfo("en-US"));
 
         this.mockInputGetter.SetupSequence(i => i.GetInput(It.IsAny<Func<string, bool>>(), It.IsAny<string>(), It.IsAny<string>())).Returns(login).Returns(pin);
         this.mockAccountDAL.Setup(a => a.IsValidLogin(It.IsAny<string>())).Returns(true);
@@ -65,6 +65,6 @@ public class LoginMenuTest
         this.mockAccountDAL.Setup(a => a.IsValidPin(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
         this.mockAccountDAL.Setup(a => a.GetAccountIdFromLogin(login)).Returns(accountId);
 
-        LoginMenu.LoginAttemptHandler(mockInputGetter.Object, mockAccountDAL.Object).Should().Be(accountId);
+        LoginMenu.LoginAttemptHandler(this.mockInputGetter.Object, this.mockAccountDAL.Object).Should().Be(accountId);
     }
 }

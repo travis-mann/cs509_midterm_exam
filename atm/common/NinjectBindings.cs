@@ -1,9 +1,9 @@
 namespace Atm.Common;
-using Ninject.Modules;
 using Atm.Dal;
 using Atm.Data;
 using Atm.LoginMenu;
 using Atm.UserMenu;
+using Ninject.Modules;
 
 public class NinjectBindings : NinjectModule
 {

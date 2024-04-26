@@ -1,6 +1,6 @@
 namespace Atm.Data;
-using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 public class Context : DbContext
 {

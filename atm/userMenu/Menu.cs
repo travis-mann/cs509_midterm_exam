@@ -2,8 +2,8 @@ namespace Atm.UserMenu;
 
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Atm.Dal;
 using Atm.Common;
+using Atm.Dal;
 
 public class Menu : IMenu
 {

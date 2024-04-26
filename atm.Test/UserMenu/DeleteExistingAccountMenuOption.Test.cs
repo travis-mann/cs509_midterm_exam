@@ -1,10 +1,10 @@
 namespace Atm.Test.UserMenu;
 
 using System.Globalization;
-using Atm.Test;
-using Atm.UserMenu;
 using Atm.Common;
 using Atm.Dal;
+using Atm.Test;
+using Atm.UserMenu;
 
 public class DeleteExistingAccountMenuOptionTest
 {

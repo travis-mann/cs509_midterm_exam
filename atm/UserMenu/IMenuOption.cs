@@ -1,6 +1,6 @@
 namespace Atm.UserMenu;
-using Atm.Dal;
 using Atm.Common;
+using Atm.Dal;
 
 public interface IMenuOption
 {

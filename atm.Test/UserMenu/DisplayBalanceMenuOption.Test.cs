@@ -1,8 +1,8 @@
 namespace Atm.Test.UserMenu;
 
-using Atm.UserMenu;
 using Atm.Common;
 using Atm.Dal;
+using Atm.UserMenu;
 
 public class DisplayBalanceMenuOptionTest
 {

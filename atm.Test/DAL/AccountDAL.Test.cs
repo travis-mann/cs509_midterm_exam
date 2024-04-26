@@ -1,8 +1,8 @@
 namespace Atm.Test.Dal;
-using Atm.Data;
-using Atm.Dal;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Atm.Dal;
+using Atm.Data;
+using Microsoft.EntityFrameworkCore;
 
 public class AccountDALTest
 {
