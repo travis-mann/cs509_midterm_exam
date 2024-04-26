@@ -1,9 +1,0 @@
-version: 2
-
-build:
-  os: ubuntu-22.04
-  tools:
-    dotnet: "6.0"
-
-sphinx:
-  configuration: docs/conf.py
