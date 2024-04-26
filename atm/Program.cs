@@ -6,6 +6,9 @@ using Ninject;  // dependancy injection
 
 internal class ATM
 {
+    /// <summary>
+    /// Entry point to load menus and start ATM Loop
+    /// </summary>
     internal static void Main()
     {
         var kernel = new StandardKernel();

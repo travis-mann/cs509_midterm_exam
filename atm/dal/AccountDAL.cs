@@ -19,6 +19,9 @@ internal class InvalidBalanceUpdateException : Exception
     }
 }
 
+/// <summary>
+/// MySQL data access layer control implementation for interacting with persistant data storage
+/// </summary>
 public class AccountDAL : IAccountDAL
 {
     private readonly IContextFactory contextFactory;

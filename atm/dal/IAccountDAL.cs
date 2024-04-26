@@ -1,5 +1,8 @@
 namespace Atm.Dal;
 
+/// <summary>
+/// Data Access Layer control for interacting with persistant data storage
+/// </summary>
 public interface IAccountDAL
 {
     public int CreateAccount(string login, int pin, string name, string role, string status, int balance);
