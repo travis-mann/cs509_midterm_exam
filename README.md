@@ -18,42 +18,44 @@ Purpose: Midterm exam for CS509 S24 "Design of Software Systems"
 
 3. What software architecture are you using? e.g. Layered/How many layers? Repository? Something else?
 
-This design is a 4 layered architechture because there are the following 4 layers which each depend on the next one down and cannot talk to any layer except the one below:
-1. Program Loop: The simpliest layer, responsible for starting the program and transitioning between elements from the 2nd layer.
-2. User Interface Layer: Reponsible for managing interactions between the user and persistant data. All CRUD operations are intitiated here and sent to the next layer down via C# calls. This layer is operates independantly from the chosen data storage solution (AKA there is no SQL or Entity frameworks here)
-3. Data Access Layer: This layer communicates directly with the MySQL database using an entity framework. It is responsible for executing CRUD operations from C# calls at the User Interface Layer. Since every layer is separated by dependancy injection, a different storage solution could be swapped in without modifying any upper layers, as long as a new DAL was included that implemented the same interface.
-4. Database: Persistant data storage for this program, implemented with MySQL.
+> This design is a 4 layered architechture because there are the following 4 layers which each depend on the next one down and cannot talk to any layer except the one below:
+> 1. Program Loop: The simpliest layer, responsible for starting the program and transitioning between elements from the 2nd layer.
+> 2. User Interface Layer: Reponsible for managing interactions between the user and persistant data. All CRUD operations are intitiated here and sent to the next layer down via C# calls. This layer is operates independantly from the chosen data storage solution (AKA there is no SQL or Entity frameworks here)
+> 3. Data Access Layer: This layer communicates directly with the MySQL database using an entity framework. It is responsible for executing CRUD operations from C# calls at the User Interface Layer. Since every layer is separated by dependancy injection, a different storage solution could be swapped in without modifying any upper layers, as long as a new DAL was included that implemented the same interface.
+> 4. Database: Persistant data storage for this program, implemented with MySQL.
 
-5. Refactor your code based on the system and object design.
-Done!
+5. Refactor your code based on the system and object design.  
+> Please see the most recent commits to this repository.
 
 4. Setup and implement unit tests. Note, only test public/internal stuff. Also, setup codecovLinks to an external site. or equivalent. I expect to see 90% code coverage.
-- [ ] `TODO`
+> - See the unit test project "ATM.Test.csproj" within this solution for unit test implementations using FluentAssertions, AutoFixture & Moq.
+> - Code coverage is pushed during GitHub Actions CI/CD here https://app.codecov.io/gh/travis-mann/cs509_midterm_exam/blob/main/atm%2FUserMenu%2FCreateNewAccountMenuOption.cs
+> - Note that the current coverage percentage on Codecov exceeds 90%.
 
-5. Please answer the following: discuss the pros/cons of the environments: VMs, docker, plain old computer. Things to consider: development vs production, working in teams, the OS you need, cost, licensing etc...
-- VMs
-  - PROS:
-  - CONS: 
+6. Please answer the following: discuss the pros/cons of the environments: VMs, docker, plain old computer. Things to consider: development vs production, working in teams, the OS you need, cost, licensing etc...
+> VMs
+  > - PROS:
+  > - CONS: 
 
-- Docker
-  - PROS: 
-  - CONS:
+> Docker
+  > - PROS: Modern Approach, Lightweight/ Lowest Overhead
+  > - CONS: Only runs natively on Linux
 
-- Plain old computer
-  - PROS:
-  - CONS: 
+> Plain old computer
+  > - PROS:
+  > - CONS: 
 
 7. Setup the following (or equivalent):
-- [ ] EditorConfig 
-- [ ] A linter for formatting your code such as: StyleCopAnalyzers, dotnet format,...
-- [ ] I expect C# documentation of public stuff. Generate class documentation via doxygen, sandcastle, ... 
+- [ X ] EditorConfig 
+- [ X ] A linter for formatting your code such as: StyleCopAnalyzers, dotnet format,...
+- [ X ] I expect C# documentation of public stuff. Generate class documentation via doxygen, sandcastle, ... 
   - [ ] You can generate it as a pdf or setup "read the docs"
-- [ ] Setup a build system such as CAKE, ...
-  - [ ] At the very least you should just use scripts (PowerShell or bash)
-- [ ] Setup a CI/CD server such as appveyor, travis-ci,...
-- [ ] Everytime someone pushes code to github the CI/CD should
+- [ X ] Setup a build system such as CAKE, ...
+  - [ X ] At the very least you should just use scripts (PowerShell or bash)
+- [ X ] Setup a CI/CD server such as appveyor, travis-ci,...
+- [ X ] Everytime someone pushes code to github the CI/CD should
   - [ ] Run your build script which includes the following (and will fail if things go wrong by notifying the user) 
   - [ ] Run StyleCopAnalyzers (or equivalent)
-  - [ ] Build the code (release and debug mode)
-  - [ ] Build the documentation (and publish them somewhere such as "read the docs" or a folder on google drive etc.)
-  - [ ] Run the unit test(s)
+  - [ X ] Build the code (release and debug mode)
+  - [ X ] Build the documentation (and publish them somewhere such as "read the docs" or a folder on google drive etc.)
+  - [ X ] Run the unit test(s)
