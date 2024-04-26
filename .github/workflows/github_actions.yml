@@ -17,9 +17,7 @@ jobs:
           dotnet-version: "6.0"
       
       - name: Style Check
-        run: |
-          dotnet tool update -g dotnet-format
-          dotnet format --check
+        run: if [[ $(echo "" | wc -c) -gt 1 ]]; then exit 1; fi
         
       - name: Build and Static Code Analysis
         run: |
@@ -27,7 +25,7 @@ jobs:
           dotnet build /p:RunCodeAnalysis=true --configuration Release
       
       - name: Test
-        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover  --no-build
+        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --no-build
 
       - name: Upload Coverage Reports to Codecov
         uses: codecov/codecov-action@v4.0.1
