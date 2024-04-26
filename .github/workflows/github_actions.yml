@@ -16,8 +16,8 @@ jobs:
         with:
           dotnet-version: "6.0"
       
-      # - name: Restore
-      #   run: dotnet restore
+      - name: Restore
+        run: dotnet restore
         
       # - name: Style Check
       #   run: dotnet format --check
