@@ -17,5 +17,5 @@ internal sealed class DisplayBalanceMenuOption : IMenuOption
         Console.WriteLine($"Balance: {accountDAL.GetBalance(accountId)}");
     }
 
-    private static string GetTodaysDateString() => DateTime.Now.ToString("MM/dd/yyyy", new CultureInfo("en-US"));
+    private static string GetTodaysDateString() => DateTime.Now.ToString("MM/dd/yyyy");
 }
