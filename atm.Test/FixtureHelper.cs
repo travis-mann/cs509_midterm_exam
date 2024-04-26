@@ -20,6 +20,19 @@ internal class FixtureHelper
         }
     }
 
+    public static string CreateRoleInput()
+    {
+        var selector = CreateIntInRange(1, 2);
+        if (selector == 1)
+        {
+            return "admin";
+        }
+        else
+        {
+            return "customer";
+        }
+    }
+
     public static string CreateNameInput() => new string(new Fixture().Create<string>().Where(char.IsLetter).ToArray());
 
     public static string CreateLoginInput()

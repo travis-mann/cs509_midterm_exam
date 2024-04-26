@@ -38,7 +38,7 @@ internal sealed class WithdrawCashMenuOption : IMenuOption
 
     private static string GetTodaysDateString() => DateTime.Now.ToString("MM/dd/yyyy", new CultureInfo("en-US"));
 
-    private static bool IsValidInput(string input, IInputGetter inputGetter)
+    internal static bool IsValidInput(string input, IInputGetter inputGetter)
     {
         if (!new Regex(inputGetter.RegexConstants.Balance).Match(input).Success)
         {
