@@ -17,6 +17,10 @@ jobs:
           dotnet-version: "6.0"
       
       - name: Style Check
+        run: echo "STYLEOUTPUTLEN=$(dotnet format | wc -c)" >> $GITHUB_ENV
+
+      - name: Check Style Check Output
+        if: ${{ env.STYLEOUTPUTLEN }} > 1
         run: exit 1
         
       - name: Build and Static Code Analysis
