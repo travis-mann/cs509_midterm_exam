@@ -24,7 +24,7 @@ internal sealed class SearchForAccountMenuOption : IMenuOption
         DisplayAccountInfo(custAccountId, accountDAL);
     }
 
-    private static int GetAccountID(string prompt, IInputGetter inputGetter) => Convert.ToInt32(inputGetter.GetInput(
+    internal static int GetAccountID(string prompt, IInputGetter inputGetter) => Convert.ToInt32(inputGetter.GetInput(
             input => new Regex(inputGetter.RegexConstants.AccountID).Match(input).Success,
             prompt
             ), new CultureInfo("en-US"));

@@ -52,7 +52,7 @@ internal sealed class UpdateAccountInformationMenuOption : IMenuOption
     {
         var status = inputGetter.GetInput(
             input => new Regex(inputGetter.RegexConstants.Status).Match(input).Success || input.Length == 0,
-            $"Status: "
+            $"Status ({accountDAL.GetStatus(accountId)}): "
             );
 
         if (status.Length > 0)

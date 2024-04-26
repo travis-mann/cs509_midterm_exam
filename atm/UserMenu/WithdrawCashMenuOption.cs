@@ -13,17 +13,17 @@ internal sealed class WithdrawCashMenuOption : IMenuOption
     public void Run(int accountId, IInputGetter inputGetter, IAccountDAL accountDAL)
     {
         // get input
-        var amount = Convert.ToInt32(inputGetter.GetInput((input) => IsValidInput(input, inputGetter), "Enter the withdrawal amount: "), new CultureInfo("en-US")) * -1;
+        var amount = Convert.ToInt32(inputGetter.GetInput((input) => IsValidInput(input, inputGetter), "Enter the withdrawal amount: "), new CultureInfo("en-US"));
 
         // remove from account
         int amountWithdrawn;
-        try
+        if (accountDAL.GetBalance(accountId) >= amount)
         {
-            _ = accountDAL.UpdateBalance(amount, accountId);
+            _ = accountDAL.UpdateBalance(amount * -1, accountId);
             Console.WriteLine("Cash Successfully Withdrawn");
-            amountWithdrawn = Math.Abs(amount);
+            amountWithdrawn = amount;
         }
-        catch (InvalidBalanceUpdateException)
+        else
         {
             Console.WriteLine("ERROR: Invalid withdrawal amount");
             amountWithdrawn = 0;
