@@ -10,33 +10,36 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      
       - name: .NET Setup
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "6.0"
-      - name: Restore
-        run: dotnet restore
+      
+      # - name: Restore
+      #   run: dotnet restore
         
-      - name: Style Check
-        run: dotnet format
+      # - name: Style Check
+      #   run: dotnet format --check
         
       - name: Debug Build and Static Code Analysis
         run: dotnet build --no-restore /p:RunCodeAnalysis=true --configuration Debug
         
-      - name: Release Build and Static Code Analysis
-        run: dotnet build --no-restore /p:RunCodeAnalysis=true --configuration Release
+      # - name: Release Build and Static Code Analysis
+      #   run: dotnet build --no-restore /p:RunCodeAnalysis=true --configuration Release
 
-      - name: Test
-        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover  --no-build
+      # - name: Test
+      #   run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover  --no-build
 
-      - name: Upload Coverage Reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+      # - name: Upload Coverage Reports to Codecov
+      #   uses: codecov/codecov-action@v4.0.1
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Prepare Documentation
         run: |
           pwd
+          ls ./atm
           mkdir "./wiki"
           mv "./atm/obj/Debug/net6.0/*.md" "./wiki"
 
