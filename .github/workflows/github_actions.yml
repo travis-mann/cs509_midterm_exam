@@ -16,17 +16,14 @@ jobs:
         with:
           dotnet-version: "6.0"
       
-      - name: Restore
-        run: dotnet restore
-        
       # - name: Style Check
       #   run: dotnet format --check
         
       - name: Debug Build and Static Code Analysis
-        run: dotnet build --no-restore /p:RunCodeAnalysis=true --configuration Debug
+        run: dotnet build /p:RunCodeAnalysis=true --configuration Debug
         
       # - name: Release Build and Static Code Analysis
-      #   run: dotnet build --no-restore /p:RunCodeAnalysis=true --configuration Release
+      #   run: dotnet build /p:RunCodeAnalysis=true --configuration Release
 
       # - name: Test
       #   run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover  --no-build
@@ -40,6 +37,9 @@ jobs:
         run: |
           pwd
           ls ./atm
+          ls ./atm/obj
+          ls ./atm/obj/Debug/
+          ls ./atm/obj/Debug/net6.0/
           mkdir "./wiki"
           mv "./atm/obj/Debug/net6.0/*.md" "./wiki"
 
