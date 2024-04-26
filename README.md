@@ -1,4 +1,6 @@
-# CS509 Midterm Exam
+[![codecov](https://codecov.io/gh/travis-mann/cs509_midterm_exam/graph/badge.svg?token=192SCO4JL4)](https://codecov.io/gh/travis-mann/cs509_midterm_exam)
+
+# CS509 Midterm/ Final Exam
 Purpose: Midterm exam for CS509 S24 "Design of Software Systems"
 
 ## Setup Instructions:
@@ -46,16 +48,23 @@ Purpose: Midterm exam for CS509 S24 "Design of Software Systems"
   > - CONS: 
 
 7. Setup the following (or equivalent):
-- [ X ] EditorConfig 
-- [ X ] A linter for formatting your code such as: StyleCopAnalyzers, dotnet format,...
-- [ X ] I expect C# documentation of public stuff. Generate class documentation via doxygen, sandcastle, ... 
-  - [ ] You can generate it as a pdf or setup "read the docs"
-- [ X ] Setup a build system such as CAKE, ...
-  - [ X ] At the very least you should just use scripts (PowerShell or bash)
-- [ X ] Setup a CI/CD server such as appveyor, travis-ci,...
-- [ X ] Everytime someone pushes code to github the CI/CD should
+- [X] EditorConfig
+    > https://github.com/RehanSaeed/EditorConfig
+- [X] A linter for formatting your code such as: StyleCopAnalyzers, dotnet format,...
+    > Run dotnet format --check
+- [ ] I expect C# documentation of public stuff. Generate class documentation via doxygen, sandcastle, ... 
+  - [X] You can generate it as a pdf or setup "read the docs"
+        > Documentation generated as an XML with "GenerateDocumentationFile" csproj option, converted to markdown with DefaultDocumentation nuget package and pushed to https://github.com/travis-mann/cs509_midterm_exam/wiki during GitHub actions CI/CD
+- [ ] Setup a build system such as CAKE, ...
+  - [ ] At the very least you should just use scripts (PowerShell or bash)
+- [X] Setup a CI/CD server such as appveyor, travis-ci,...
+- [X] Everytime someone pushes code to github the CI/CD should
   - [ ] Run your build script which includes the following (and will fail if things go wrong by notifying the user) 
-  - [ ] Run StyleCopAnalyzers (or equivalent)
-  - [ X ] Build the code (release and debug mode)
-  - [ X ] Build the documentation (and publish them somewhere such as "read the docs" or a folder on google drive etc.)
-  - [ X ] Run the unit test(s)
+  - [X] Run StyleCopAnalyzers (or equivalent)
+      > Run dotnet format --check w/ the editorconfig used applies stylecop settings  
+  - [X] Build the code (release and debug mode)
+  - [X] Build the documentation (and publish them somewhere such as "read the docs" or a folder on google drive etc.)
+      > Documentation generated as an XML with "GenerateDocumentationFile" csproj option, converted to markdown with DefaultDocumentation nuget package and pushed to https://github.com/travis-mann/cs509_midterm_exam/wiki during GitHub actions CI/CD  
+  - [X] Run the unit test(s)
+      > dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover  --no-build  
+      > Coverage report is uploaded to https://app.codecov.io/gh/travis-mann/cs509_midterm_exam
