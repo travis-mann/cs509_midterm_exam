@@ -13,7 +13,7 @@ Purpose: Midterm/ Final exam for CS509 S24 "Design of Software Systems"
 ## Final
 1. Make a System Design drawing
 
-![image](https://github.com/travis-mann/cs509_midterm_exam/assets/96485031/f6e13af5-7dcb-4377-8117-206e443695cd)
+![image](https://github.com/travis-mann/cs509_midterm_exam/assets/96485031/cefa6bdc-10d0-4ba6-bb8d-5ca61757bec0)
 
 2. Improve your Class Diagrams (object design)
 - [ ] `TODO`
