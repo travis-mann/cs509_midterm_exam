@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 /// </summary>
 public class Context : DbContext
 {
+    #pragma warning disable format
     /// <summary>
     /// Reference to AccountRepository Table
     /// </summary>
     public virtual DbSet<AccountRepository> Account { get; set; }
+    #pragma warning restore format
 
     /// <summary>
     /// Creates connection to MySQL database
