@@ -35,13 +35,9 @@ jobs:
 
       - name: Prepare Documentation
         run: |
-          pwd
-          ls ./atm
-          ls ./atm/obj
-          ls ./atm/obj/Debug/
-          ls ./atm/obj/Debug/net6.0/
           mkdir "./wiki"
-          mv "./atm/obj/Debug/net6.0/*.md" "./wiki"
+          ls
+          mv ./atm/obj/Debug/net6.0/*.md ./wiki
 
       - name: Publish Documentation
         uses: Andrew-Chen-Wang/github-wiki-action@v4
