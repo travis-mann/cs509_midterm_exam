@@ -1,7 +1,7 @@
 [![codecov](https://codecov.io/gh/travis-mann/cs509_midterm_exam/graph/badge.svg?token=192SCO4JL4)](https://codecov.io/gh/travis-mann/cs509_midterm_exam)
 
 # CS509 Midterm/ Final Exam
-Purpose: Midterm exam for CS509 S24 "Design of Software Systems"
+Purpose: Midterm/ Final exam for CS509 S24 "Design of Software Systems"
 
 ## Setup Instructions:
 1. Create a new visual studio project cloned from this repository
@@ -44,7 +44,7 @@ Purpose: Midterm exam for CS509 S24 "Design of Software Systems"
   > - CONS: Only runs natively on Linux
 
 > Plain old computer
-  > - PROS:
+  > - PROS: 
   > - CONS: 
 
 7. Setup the following (or equivalent):
@@ -52,14 +52,14 @@ Purpose: Midterm exam for CS509 S24 "Design of Software Systems"
     > https://github.com/RehanSaeed/EditorConfig
 - [X] A linter for formatting your code such as: StyleCopAnalyzers, dotnet format,...
     > Run dotnet format --check
-- [ ] I expect C# documentation of public stuff. Generate class documentation via doxygen, sandcastle, ... 
+- [X] I expect C# documentation of public stuff. Generate class documentation via doxygen, sandcastle, ... 
   - [X] You can generate it as a pdf or setup "read the docs"
         > Documentation generated as an XML with "GenerateDocumentationFile" csproj option, converted to markdown with DefaultDocumentation nuget package and pushed to https://github.com/travis-mann/cs509_midterm_exam/wiki during GitHub actions CI/CD
-- [ ] Setup a build system such as CAKE, ...
-  - [ ] At the very least you should just use scripts (PowerShell or bash)
+- [X] Setup a build system such as CAKE, ...
+  - [X] At the very least you should just use scripts (PowerShell or bash)
 - [X] Setup a CI/CD server such as appveyor, travis-ci,...
 - [X] Everytime someone pushes code to github the CI/CD should
-  - [ ] Run your build script which includes the following (and will fail if things go wrong by notifying the user) 
+  - [X] Run your build script which includes the following (and will fail if things go wrong by notifying the user) 
   - [X] Run StyleCopAnalyzers (or equivalent)
       > Run dotnet format --check w/ the editorconfig used applies stylecop settings  
   - [X] Build the code (release and debug mode)
