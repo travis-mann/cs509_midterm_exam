@@ -44,9 +44,8 @@ internal class ATM
             };
 
     private static IMenuOption[] GetCustomerMenu() => new IMenuOption[] {
-                new CreateNewAccountMenuOption(),
-                new DeleteExistingAccountMenuOption(),
-                new UpdateAccountInformationMenuOption(),
-                new SearchForAccountMenuOption()
+                new WithdrawCashMenuOption(),
+                new DepositCashMenuOption(),
+                new DisplayBalanceMenuOption()
             };
 }

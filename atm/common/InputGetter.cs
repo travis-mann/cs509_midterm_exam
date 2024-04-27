@@ -17,7 +17,7 @@ public class InputGetter : IInputGetter
     /// <param name="fieldName">user prompt</param>
     /// <param name="errorMessage">message displayed for invalid input</param>
     /// <returns></returns>
-    public string GetInput(Func<string, bool> isValid, string fieldName, string? errorMessage = null)
+    public string GetInput(Func<string, bool> isValid, string fieldName, string errorMessage)
     {
         Console.Write(fieldName);
         string? input = null;
@@ -30,7 +30,7 @@ public class InputGetter : IInputGetter
         return input;
     }
 
-    internal static string? GetInputSingleLoop(Func<string, bool> isValid, string? errorMessage = "ERROR: Invalid value, Try again: ")
+    internal static string? GetInputSingleLoop(Func<string, bool> isValid, string errorMessage)
     {
         var input = Console.ReadLine() ?? "";
         if (isValid(input))

@@ -17,5 +17,5 @@ public interface IInputGetter
     /// <param name="fieldName">user prompt</param>
     /// <param name="errorMessage">message displayed for invalid input</param>
     /// <returns></returns>
-    public string GetInput(Func<string, bool> isValid, string fieldName, string? errorMessage = null);
+    public string GetInput(Func<string, bool> isValid, string fieldName, string errorMessage = "ERROR: Invalid value, Try again: ");
 }
