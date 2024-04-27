@@ -1,44 +1,17 @@
 CREATE DATABASE atm;
 
-CREATE TABLE atm.status (
+CREATE TABLE atm.account (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL UNIQUE
-);
-
-INSERT INTO atm.status (name) VALUES ('active'), ('disabled');
-
-CREATE TABLE atm.role (
-	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL UNIQUE
-);
-
-INSERT INTO atm.role (name) VALUES ('admin'), ('customer');
-
-CREATE TABLE atm.user (
-    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     login VARCHAR(255) NOT NULL UNIQUE,
     pin INT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    roleId int, 
-    FOREIGN KEY (roleId) REFERENCES role(id)
+    balance int NOT NULL,
+    role VARCHAR(255) NOT NULL,
+    status VARCHAR(255) NOT NULL
 );
 
-insert into atm.user (login, pin, name, statusId, roleId)
+insert into atm.account (login, pin, name, balance, role, status)
 VALUES 
-('devadmin', 12345, 'John Doe', (select id from atm.status where name = 'active'), (select id from atm.role where name = 'admin')),
-('devcust', 12345, 'Jane Doe', (select id from atm.status where name = 'active'), (select id from atm.role where name = 'customer'))
-;
-
-CREATE TABLE atm.account (
-    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    userId INT NOT NULL,
-    FOREIGN KEY (userId) REFERENCES user(id),
-    statusId int NOT NULL,
-    FOREIGN KEY (statusId) REFERENCES status(id),
-    balance int NOT NULL
-);
-
-insert into atm.account (userId, statusId, balance)
-VALUES 
-(2, (select id from atm.status where name = 'active'), 5000)
+('devadmin', 12345, 'John Doe', 0, 'admin', 'active'),
+('devcust', 12345, 'Jane Doe', 1000, 'customer', 'active')
 ;
