@@ -16,7 +16,7 @@ Purpose: Midterm/ Final exam for CS509 S24 "Design of Software Systems"
 ![image](https://github.com/travis-mann/cs509_midterm_exam/assets/96485031/9e7407e1-9255-4f02-b309-90c29686b313)
 
 2. Improve your Class Diagrams (object design)
-- [ ] `TODO`
+![image](https://github.com/travis-mann/cs509_midterm_exam/assets/96485031/33331820-2435-471a-9a8c-1a5a10a5e2cd)
 
 3. What software architecture are you using? e.g. Layered/How many layers? Repository? Something else?
 
@@ -51,18 +51,21 @@ Purpose: Midterm/ Final exam for CS509 S24 "Design of Software Systems"
 - [X] EditorConfig
     > https://github.com/RehanSaeed/EditorConfig
 - [X] A linter for formatting your code such as: StyleCopAnalyzers, dotnet format,...
-    > Run dotnet format --check
+    > dotnet format --verify-no-changes
 - [X] I expect C# documentation of public stuff. Generate class documentation via doxygen, sandcastle, ... 
   - [X] You can generate it as a pdf or setup "read the docs"
         > Documentation generated as an XML with "GenerateDocumentationFile" csproj option, converted to markdown with DefaultDocumentation nuget package and pushed to https://github.com/travis-mann/cs509_midterm_exam/wiki during GitHub actions CI/CD
-- [X] Setup a build system such as CAKE, ...
-  - [X] At the very least you should just use scripts (PowerShell or bash)
+- [X] Setup a build system such as CAKE, at the very least you should just use scripts (PowerShell or bash)
+    > Cake Build Script: https://github.com/travis-mann/cs509_midterm_exam/blob/main/build.cake
 - [X] Setup a CI/CD server such as appveyor, travis-ci,...
+    > GitHub Actions: https://github.com/travis-mann/cs509_midterm_exam/blob/main/.github/workflows/github_actions.yml
 - [X] Everytime someone pushes code to github the CI/CD should
-  - [X] Run your build script which includes the following (and will fail if things go wrong by notifying the user) 
+  - [X] Run your build script which includes the following (and will fail if things go wrong by notifying the user)
   - [X] Run StyleCopAnalyzers (or equivalent)
       > Run dotnet format --check w/ the editorconfig used applies stylecop settings  
   - [X] Build the code (release and debug mode)
+      > dotnet build /p:RunCodeAnalysis=true --configuration Debug  
+      > dotnet build /p:RunCodeAnalysis=true --configuration Release
   - [X] Build the documentation (and publish them somewhere such as "read the docs" or a folder on google drive etc.)
       > Documentation generated as an XML with "GenerateDocumentationFile" csproj option, converted to markdown with DefaultDocumentation nuget package and pushed to https://github.com/travis-mann/cs509_midterm_exam/wiki during GitHub actions CI/CD  
   - [X] Run the unit test(s)
