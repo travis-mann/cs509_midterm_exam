@@ -16,6 +16,7 @@ Purpose: Midterm/ Final exam for CS509 S24 "Design of Software Systems"
 ![image](https://github.com/travis-mann/cs509_midterm_exam/assets/96485031/9e7407e1-9255-4f02-b309-90c29686b313)
 
 2. Improve your Class Diagrams (object design)
+
 ![image](https://github.com/travis-mann/cs509_midterm_exam/assets/96485031/33331820-2435-471a-9a8c-1a5a10a5e2cd)
 
 3. What software architecture are you using? e.g. Layered/How many layers? Repository? Something else?
@@ -31,13 +32,15 @@ Purpose: Midterm/ Final exam for CS509 S24 "Design of Software Systems"
 
 4. Setup and implement unit tests. Note, only test public/internal stuff. Also, setup codecovLinks to an external site. or equivalent. I expect to see 90% code coverage.
 > - See the unit test project "ATM.Test.csproj" within this solution for unit test implementations using FluentAssertions, AutoFixture & Moq.
-> - Code coverage is pushed during GitHub Actions CI/CD here https://app.codecov.io/gh/travis-mann/cs509_midterm_exam/blob/main/atm%2FUserMenu%2FCreateNewAccountMenuOption.cs
+> - Code coverage is pushed during GitHub Actions CI/CD here https://app.codecov.io/gh/travis-mann/cs509_midterm_exam
 > - Note that the current coverage percentage on Codecov exceeds 90%.
+
+![image](https://github.com/travis-mann/cs509_midterm_exam/assets/96485031/0191c6d6-d394-4777-95b6-2df7ddec7cdf)
 
 6. Please answer the following: discuss the pros/cons of the environments: VMs, docker, plain old computer. Things to consider: development vs production, working in teams, the OS you need, cost, licensing etc...
 > VMs
-  > - PROS: Isolated and easily reproducable environments. VM images can be created and shared across a team to ensure the same development environment with no additional configurations. Similarly for deployment, you can utilize the same base VM image used in development to minimze the amount of custom configuration. VMs can run with any OS and on any host OS and there are various VM offerings, some of which have licening fees and others which are completely free.
-  > - CONS: A virtual environment does not use host OS resources as efficiently as docker. Additionally using a VM over plain old computers introduces additional complexity to the system with the VM software, any required configurations and consideration for where VMs are hosted
+  > - PROS: Isolated and easily reproducable environments. VM images can be created and shared across a team to ensure the same development environment with no additional configurations. Similarly for deployment, you can utilize the same base VM image used in development to minimze the amount of custom configuration. VMs can run with any OS / on any host OS and there are various VM offerings, some of which have licening fees and others which are completely free.
+  > - CONS: A virtual environment does not use host OS resources as efficiently as docker. Additionally using a VM over plain old computers introduces additional complexity to the system with the VM software, any required configurations and consideration for where VMs are hosted.
 
 > Docker
   > - PROS: Docker is the most modern deployment approach which creates isolated environments in the form of containers that efficiently utilizize the resources from their host os. This is the easiest option for deployment and working in teams because the container you develop in is the exact same container that is shared and deployed into production. The base Docker technology is completely free for command line use.
@@ -61,6 +64,7 @@ Purpose: Midterm/ Final exam for CS509 S24 "Design of Software Systems"
     > GitHub Actions: https://github.com/travis-mann/cs509_midterm_exam/blob/main/.github/workflows/github_actions.yml
 - [X] Everytime someone pushes code to github the CI/CD should
   - [X] Run your build script which includes the following (and will fail if things go wrong by notifying the user)
+      > CI/CD emulates the same actions from the build script which was a cleaner approach because it allows the CI/CD pipeline to pass or fail each individual step.
   - [X] Run StyleCopAnalyzers (or equivalent)
       > Run dotnet format --check w/ the editorconfig used applies stylecop settings  
   - [X] Build the code (release and debug mode)
