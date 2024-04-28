@@ -24,7 +24,7 @@ Purpose: Midterm/ Final exam for CS509 S24 "Design of Software Systems"
 > This design is a 4 layered architechture because there are the following 4 layers which each depend on the next one down and cannot talk to any layer except the one below:
 > 1. Program Layer: The simpliest layer, responsible for starting the program and transitioning between elements from the 2nd layer.
 > 2. User Interface Layer: Reponsible for managing interactions between the user and persistant data. All CRUD operations are intitiated here and sent to the next layer down via C# calls. This layer is operates independantly from the chosen data storage solution (AKA there is no SQL or Entity frameworks here)
-> 3. Data Access Layer: This layer communicates directly with the MySQL database using an entity framework. It is responsible for executing CRUD operations from C# calls at the User Interface Layer. Since every layer is separated by dependancy injection, a different storage solution could be swapped in without modifying any upper layers, as long as a new DAL was included that implemented the same interface.
+> 3. Data Access Layer: This layer communicates directly with the MySQL database using an entity framework. It is responsible for executing CRUD operations from C# calls at the User Interface Layer. Since this layer is separated by dependancy injection, a different storage solution could be swapped in without modifying any upper layers, as long as a new DAL was included that implemented the same IAccountDAL interface.
 > 4. Persistant Data Storage Layer: Persistant data storage for this program, implemented with MySQL.
 
 5. Refactor your code based on the system and object design.  
